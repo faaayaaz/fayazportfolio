@@ -1,19 +1,30 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription
+} from "@/components/ui/dialog";
+import { Lock } from "lucide-react";
 
 export default function Login() {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     username: "",
     password: ""
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -24,25 +35,33 @@ export default function Login() {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate login
+    // Simulate login with a setTimeout to mimic API call
     setTimeout(() => {
       setIsLoading(false);
       
-      // This is just a demo - in a real application we'd verify credentials properly
+      // Check credentials
       if (credentials.username === "admin" && credentials.password === "password") {
+        // Store login status in localStorage
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("username", credentials.username);
+        
+        // Show success toast
         toast({
           title: "Login successful!",
-          description: "Redirecting to admin dashboard...",
+          description: "Welcome to the admin dashboard",
         });
-        // In a real app, we would redirect to admin dashboard here
+        
+        // Redirect to home page (in a real app, this would go to an admin dashboard)
+        navigate("/");
       } else {
+        // Show error toast
         toast({
           title: "Login failed",
           description: "Invalid username or password. Please try again.",
           variant: "destructive"
         });
       }
-    }, 1500);
+    }, 1000);
   };
 
   return (
@@ -56,11 +75,14 @@ export default function Login() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="bg-white p-8 rounded-lg shadow-md border border-gray-100"
+              className="bg-white p-8 rounded-lg shadow-md border border-gray-100 dark:bg-gray-800 dark:border-gray-700"
             >
               <div className="text-center mb-8">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Lock className="h-8 w-8 text-primary" />
+                </div>
                 <h1 className="text-2xl font-serif font-bold">Admin Login</h1>
-                <p className="text-gray-600 mt-2">Sign in to access the admin dashboard</p>
+                <p className="text-gray-600 mt-2 dark:text-gray-400">Sign in to access the admin dashboard</p>
               </div>
               
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -74,6 +96,8 @@ export default function Login() {
                     value={credentials.username}
                     onChange={handleChange}
                     required
+                    className="dark:border-gray-600"
+                    placeholder="Enter your username"
                   />
                 </div>
                 
@@ -88,6 +112,8 @@ export default function Login() {
                     value={credentials.password}
                     onChange={handleChange}
                     required
+                    className="dark:border-gray-600"
+                    placeholder="Enter your password"
                   />
                 </div>
                 
@@ -101,14 +127,38 @@ export default function Login() {
               </form>
               
               <div className="mt-6 text-center text-sm">
-                <p className="text-gray-600">
-                  For demo purposes use: admin / password
+                <p className="text-gray-600 dark:text-gray-400">
+                  For demo purposes use: <button 
+                    type="button" 
+                    onClick={() => setShowHelp(true)}
+                    className="text-primary hover:underline"
+                  >
+                    View Login Credentials
+                  </button>
                 </p>
               </div>
             </motion.div>
           </div>
         </div>
       </main>
+      
+      <Dialog open={showHelp} onOpenChange={setShowHelp}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Demo Login Credentials</DialogTitle>
+            <DialogDescription>
+              Use these credentials to access the admin panel:
+            </DialogDescription>
+          </DialogHeader>
+          <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-md font-mono text-sm">
+            <div><strong>Username:</strong> admin</div>
+            <div><strong>Password:</strong> password</div>
+          </div>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Note: In a production environment, you would have proper authentication with secure credentials.
+          </p>
+        </DialogContent>
+      </Dialog>
       
       <Footer />
     </div>
