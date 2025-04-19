@@ -1,110 +1,22 @@
+import { useEffect, useState } from "react";
+import { FashionAdminControls } from "@/components/admin/FashionAdminControls";
 
-import { useState } from "react";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import { motion } from "framer-motion";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+const Fashion = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
 
-export default function Fashion() {
-  const [selectedProject, setSelectedProject] = useState<FashionProject | null>(null);
-  
-  // Categories for filtering
-  const categories = ["All", "Editorial", "Commercial", "Runway", "Campaign"];
-  const [activeCategory, setActiveCategory] = useState("All");
+  useEffect(() => {
+    const checkAdmin = () => {
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      setIsAdmin(isLoggedIn);
+    };
 
-  interface FashionProject {
-    id: number;
-    title: string;
-    category: string;
-    description: string;
-    client: string;
-    year: string;
-    image: string;
-    photographer?: string;
-  }
-
-  const projects: FashionProject[] = [
-    {
-      id: 1,
-      title: "Urban Night Collection",
-      category: "Editorial",
-      description: "A fashion editorial showcasing urban nightlife style elements with contemporary cuts and textures. Shot against the backdrop of a vibrant city at night, highlighting the contrast between dark urban environments and fashion-forward styling.",
-      client: "Fashion Magazine",
-      year: "2023",
-      photographer: "J. Williams",
-      image: "/lovable-uploads/ae139fdd-c90a-4407-b79f-1f8ebad5dc67.png"
-    },
-    {
-      id: 2,
-      title: "City Lights",
-      category: "Editorial",
-      description: "Editorial shoot featuring elegant evening wear in an urban setting. The city lights create a stunning backdrop for showcasing sophisticated attire designed for urban professionals.",
-      client: "Urban Style Magazine",
-      year: "2023",
-      photographer: "A. Reynolds",
-      image: "/lovable-uploads/1cb96b82-31c8-4f79-9365-eb23a4bfc4c8.png"
-    },
-    {
-      id: 3,
-      title: "Winter Essentials",
-      category: "Commercial",
-      description: "Commercial campaign for winter collection featuring practical yet stylish cold-weather essentials. Demonstrating the functionality and fashion appeal of winter clothing in real-world environments.",
-      client: "Northern Apparel",
-      year: "2022",
-      photographer: "C. Morgan",
-      image: "/lovable-uploads/26d9f84d-93af-4f3f-935d-21c6ebdf937f.png"
-    },
-    {
-      id: 4,
-      title: "Sunset Boulevard",
-      category: "Campaign",
-      description: "A sunset-themed campaign highlighting summer fashion with warm tones and casual silhouettes. The golden hour lighting accentuates the seasonal color palette and relaxed styling.",
-      client: "Summer Trends",
-      year: "2023",
-      photographer: "L. Thompson",
-      image: "/lovable-uploads/dd473452-7149-47a4-856e-075831b4b5a1.png"
-    },
-    {
-      id: 5,
-      title: "Mountain Retreat",
-      category: "Commercial",
-      description: "Commercial project showcasing outdoor apparel in a mountain setting. Functional fashion that combines performance with style for the adventure enthusiast.",
-      client: "Outdoor Living",
-      year: "2022",
-      photographer: "R. Blake",
-      image: "/lovable-uploads/26d9f84d-93af-4f3f-935d-21c6ebdf937f.png"
-    },
-    {
-      id: 6,
-      title: "Elegant Evening",
-      category: "Editorial",
-      description: "Editorial spread featuring formal and semi-formal attire for upscale evening events. Classic silhouettes with modern touches create a timeless yet contemporary collection.",
-      client: "Elegance Magazine",
-      year: "2023",
-      photographer: "E. Davis",
-      image: "/lovable-uploads/effb464c-46e9-4f0e-9149-8adb1d3b1d22.png"
-    },
-    {
-      id: 7,
-      title: "Spring Collection Runway",
-      category: "Runway",
-      description: "Runway show featuring the latest spring collection with fresh colors and innovative designs. A showcase of upcoming trends for the fashion-forward consumer.",
-      client: "Fashion Week",
-      year: "2023",
-      photographer: "T. Wilson",
-      image: "/lovable-uploads/7e04893a-ef02-44c6-96ad-5e68880373bb.png"
-    }
-  ];
-
-  const filteredProjects = activeCategory === "All" 
-    ? projects 
-    : projects.filter(project => project.category === activeCategory);
+    checkAdmin();
+    window.addEventListener("storage", checkAdmin);
+    
+    return () => {
+      window.removeEventListener("storage", checkAdmin);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -246,4 +158,6 @@ export default function Fashion() {
       <Footer />
     </div>
   );
-}
+};
+
+export default Fashion;
