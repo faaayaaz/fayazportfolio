@@ -1,4 +1,3 @@
-
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { motion } from "framer-motion";
@@ -18,8 +17,13 @@ import {
   Tooltip, 
   Legend
 } from "recharts";
+import { useState, useEffect } from "react";
+import { DataAdminControls } from "@/components/admin/DataAdminControls";
+import { Link2 } from "lucide-react";
 
 export default function Data() {
+  const [isAdmin, setIsAdmin] = useState(false);
+
   const barData = [
     { name: 'Jan', value: 12 },
     { name: 'Feb', value: 19 },
@@ -92,6 +96,27 @@ export default function Data() {
       image: "/placeholder.svg"
     }
   ];
+
+  useEffect(() => {
+    const checkAdmin = () => {
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      setIsAdmin(isLoggedIn);
+    };
+
+    checkAdmin();
+    window.addEventListener("storage", checkAdmin);
+    
+    return () => {
+      window.removeEventListener("storage", checkAdmin);
+    };
+  }, []);
+
+  const handleProjectUpdate = (updatedProject: any) => {
+    const updatedProjects = dataProjects.map(project => 
+      project.id === updatedProject.id ? updatedProject : project
+    );
+    console.log("Project updated:", updatedProject);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -335,8 +360,14 @@ export default function Data() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="data-card overflow-visible"
+                  className="data-card overflow-visible relative"
                 >
+                  {isAdmin && (
+                    <DataAdminControls 
+                      project={project}
+                      onUpdate={handleProjectUpdate}
+                    />
+                  )}
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-xl font-serif text-data-navy">{project.title}</h3>
@@ -349,8 +380,21 @@ export default function Data() {
                       <div className="text-sm text-data-slate">
                         <span className="font-medium">Tools:</span> {project.tools}
                       </div>
-                      <div className="text-sm text-data-slate">
-                        <span className="font-medium">Year:</span> {project.year}
+                      <div className="flex items-center gap-2">
+                        {project.url && (
+                          <a
+                            href={project.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1 text-sm text-data-blue hover:text-data-blue/80"
+                          >
+                            <Link2 className="h-4 w-4" />
+                            {project.urlMask || 'View Project'}
+                          </a>
+                        )}
+                        <div className="text-sm text-data-slate">
+                          <span className="font-medium">Year:</span> {project.year}
+                        </div>
                       </div>
                     </div>
                   </div>
