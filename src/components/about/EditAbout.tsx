@@ -1,10 +1,11 @@
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { ImageUpload } from "../common/ImageUpload";
 
 interface EditAboutProps {
   open: boolean;
@@ -65,10 +66,7 @@ export default function EditAbout({
             <label className="block mb-1 font-medium">Tags (comma separated)</label>
             <Input value={tags} onChange={e => setTags(e.target.value)} />
           </div>
-          <div>
-            <label className="block mb-1 font-medium">Profile Image URL</label>
-            <Input value={image} onChange={e => setImage(e.target.value)} />
-          </div>
+          <ImageUpload value={image} onChange={setImage} label="Profile Image" />
           <div className="flex justify-end">
             <Button type="submit">Save Changes</Button>
           </div>

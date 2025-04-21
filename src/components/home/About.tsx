@@ -13,8 +13,9 @@ export default function AboutPreview() {
           className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
         >
           <div>
+            {/* Changed main About image! */}
             <img
-              src="/lovable-uploads/357ea9c5-6a81-4980-afb3-0dda40df4919.png"
+              src="/lovable-uploads/4bdd5663-8cc1-4492-bc0b-e137ad9812ad.png"
               alt="Profile"
               className="rounded-lg w-full max-w-md shadow-lg mx-auto"
             />
@@ -47,6 +48,12 @@ export default function AboutPreview() {
               <span className="px-3 py-1 bg-data-lightblue text-data-navy rounded-full text-sm">
                 SQL
               </span>
+            </div>
+            {/* Additional Preview Images for About */}
+            <div className="flex gap-4 mt-8">
+              <img src="/lovable-uploads/ec60566c-f4b9-4a91-ad34-b3a8294c1ef6.png" alt="Profile" className="rounded-md w-20 h-20 object-cover shadow" />
+              <img src="/lovable-uploads/ec44a1a0-5b5b-4869-8f36-4b0c37e340f2.png" alt="Profile" className="rounded-md w-20 h-20 object-cover shadow" />
+              <img src="/lovable-uploads/83c8a021-5998-44ec-ad17-1c9a1d09695a.png" alt="Profile" className="rounded-md w-20 h-20 object-cover shadow" />
             </div>
           </div>
         </motion.div>

@@ -20,11 +20,7 @@ import {
 import { useState, useEffect } from "react";
 import { DataAdminControls } from "@/components/admin/DataAdminControls";
 import { Link2 } from "lucide-react";
-
-// Add new hooks for Profile and Skills Info management
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
+import { ImageUpload } from "@/components/common/ImageUpload";
 
 export default function Data() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -112,7 +108,6 @@ export default function Data() {
     }
   ];
 
-  // Add state for profile and skills edit
   const [profile, setProfile] = useState({
     name: "Fayaz Mohamed",
     role: "Data Analyst",
@@ -144,6 +139,7 @@ export default function Data() {
   const [languagesInput, setLanguagesInput] = useState(skills.languages.join("\n"));
   const [methodsInput, setMethodsInput] = useState(skills.methods.join("\n"));
   const [toolsInput, setToolsInput] = useState(skills.tools.join("\n"));
+  const [profileImage, setProfileImage] = useState(profile.img);
 
   const { toast } = useToast();
 
@@ -168,15 +164,13 @@ export default function Data() {
     console.log("Project updated:", updatedProject);
   };
 
-  // Handler for profile edit
   const handleProfileEdit = (e: React.FormEvent) => {
     e.preventDefault();
     setProfile({
       ...profile,
-      // All fields are controlled below
       name: (e.target as any).name.value,
       role: (e.target as any).role.value,
-      img: (e.target as any).img.value,
+      img: profileImage,
       about: (e.target as any).about.value,
     });
     setShowProfileEdit(false);
@@ -186,7 +180,6 @@ export default function Data() {
     });
   };
 
-  // Handler for skills edit
   const handleSkillsEdit = (e: React.FormEvent) => {
     e.preventDefault();
     setSkills({
@@ -206,7 +199,6 @@ export default function Data() {
       <Navbar />
       
       <main className="pt-24">
-        {/* Hero Section */}
         <section className="relative h-[50vh] bg-data-lightblue/30">
           <div className="absolute inset-0 overflow-hidden bg-data-navy/10">
             <div className="h-full w-full bg-grid-pattern opacity-30"></div>
@@ -234,7 +226,6 @@ export default function Data() {
           </div>
         </section>
 
-        {/* Profile Card with Edit */}
         <section className="section-padding bg-white">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 justify-between items-center mb-8">
             <div className="flex items-center gap-6">
@@ -250,9 +241,11 @@ export default function Data() {
               </div>
             </div>
             <div>
-              <Button onClick={() => setShowProfileEdit(true)} variant="outline">
-                Edit Profile
-              </Button>
+              {isAdmin && (
+                <Button onClick={() => setShowProfileEdit(true)} variant="outline">
+                  Edit Profile
+                </Button>
+              )}
               <Dialog open={showProfileEdit} onOpenChange={setShowProfileEdit}>
                 <DialogContent>
                   <DialogHeader>
@@ -267,10 +260,7 @@ export default function Data() {
                       <label className="block mb-1 font-medium">Role</label>
                       <Input name="role" defaultValue={profile.role} />
                     </div>
-                    <div>
-                      <label className="block mb-1 font-medium">Profile Image URL</label>
-                      <Input name="img" defaultValue={profile.img} />
-                    </div>
+                    <ImageUpload value={profileImage} onChange={setProfileImage} label="Profile Image"/>
                     <div>
                       <label className="block mb-1 font-medium">About You</label>
                       <Input name="about" defaultValue={profile.about} />
@@ -285,7 +275,6 @@ export default function Data() {
           </div>
         </section>
 
-        {/* Skills Overview with Edit */}
         <section className="section-padding bg-white">
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center justify-between mb-2">
@@ -298,10 +287,11 @@ export default function Data() {
               >
                 Data Analysis Toolkit
               </motion.h2>
-              <Button onClick={() => setShowSkillsEdit(true)} variant="outline">
-                Edit Skills
-              </Button>
-              {/* Modal: Edit Skills */}
+              {isAdmin && (
+                <Button onClick={() => setShowSkillsEdit(true)} variant="outline">
+                  Edit Skills
+                </Button>
+              )}
               <Dialog open={showSkillsEdit} onOpenChange={setShowSkillsEdit}>
                 <DialogContent>
                   <DialogHeader>
@@ -398,7 +388,6 @@ export default function Data() {
           </div>
         </section>
 
-        {/* Data Visualization Showcase */}
         <section className="section-padding bg-gray-50">
           <div className="max-w-6xl mx-auto">
             <motion.h2
@@ -410,7 +399,6 @@ export default function Data() {
             >
               Data Visualization Showcase
             </motion.h2>
-            
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -421,71 +409,9 @@ export default function Data() {
               Examples of data visualization techniques used in various projects
               to communicate complex information effectively.
             </motion.p>
-            
-            <Tabs defaultValue="bar" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 mb-8">
-                <TabsTrigger value="bar">Bar Charts</TabsTrigger>
-                <TabsTrigger value="line">Line Charts</TabsTrigger>
-                <TabsTrigger value="pie">Pie Charts</TabsTrigger>
-              </TabsList>
-              <TabsContent value="bar" className="p-4 bg-white rounded-lg shadow-md">
-                <h3 className="text-xl font-serif mb-4">Monthly Performance Metrics</h3>
-                <div className="h-[300px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={barData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="value" fill="#3E78B2" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </TabsContent>
-              <TabsContent value="line" className="p-4 bg-white rounded-lg shadow-md">
-                <h3 className="text-xl font-serif mb-4">Trend Analysis</h3>
-                <div className="h-[300px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={lineData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Line type="monotone" dataKey="pv" stroke="#2A9D8F" strokeWidth={2} />
-                      <Line type="monotone" dataKey="uv" stroke="#1A2B49" strokeWidth={2} />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </TabsContent>
-              <TabsContent value="pie" className="p-4 bg-white rounded-lg shadow-md">
-                <h3 className="text-xl font-serif mb-4">Distribution Analysis</h3>
-                <div className="h-[300px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={pieData}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        outerRadius={100}
-                        fill="#8884d8"
-                        dataKey="value"
-                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                      >
-                        {pieData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </TabsContent>
-            </Tabs>
           </div>
         </section>
 
-        {/* Projects Section */}
         <section className="section-padding">
           <div className="max-w-6xl mx-auto">
             <motion.h2

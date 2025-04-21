@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Edit } from "lucide-react";
 import EditAbout from "@/components/about/EditAbout";
+import { ImageUpload } from "@/components/common/ImageUpload";
 
 export default function About() {
   const defaultAbout = {
@@ -15,7 +16,7 @@ export default function About() {
     ],
     tags: [
       "Fashion Modeling",
-      "Data Analysis",
+      "Data Analysis", 
       "Photography",
       "Python",
       "SQL"
