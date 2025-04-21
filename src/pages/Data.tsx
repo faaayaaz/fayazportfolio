@@ -1,3 +1,4 @@
+
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { motion } from "framer-motion";
@@ -21,6 +22,9 @@ import { useState, useEffect } from "react";
 import { DataAdminControls } from "@/components/admin/DataAdminControls";
 import { Link2 } from "lucide-react";
 import { ImageUpload } from "@/components/common/ImageUpload";
+import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 export default function Data() {
   const [isAdmin, setIsAdmin] = useState(false);
