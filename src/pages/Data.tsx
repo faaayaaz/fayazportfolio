@@ -57,7 +57,9 @@ export default function Data() {
       description: "Analyzed customer behavior data to optimize user journey and increase conversions by 24%. Used Python and Pandas to clean and process over 1 million transaction records, identifying key patterns in customer behavior.",
       tools: "Python, Pandas, SQL, Matplotlib",
       year: "2023",
-      image: "/placeholder.svg"
+      image: "/placeholder.svg",
+      url: "https://example.com/ecommerce-analysis",
+      urlMask: "View Analysis"
     },
     {
       id: 2,
@@ -66,7 +68,9 @@ export default function Data() {
       description: "Built a prediction model for fashion inventory management with 92% accuracy. Used time series analysis to forecast demand for different product categories based on historical sales data, seasonal trends, and external factors.",
       tools: "R, Time Series Analysis, Python, scikit-learn",
       year: "2022",
-      image: "/placeholder.svg"
+      image: "/placeholder.svg",
+      url: "https://example.com/inventory-prediction",
+      urlMask: "View Model"
     },
     {
       id: 3,
@@ -75,7 +79,9 @@ export default function Data() {
       description: "Created an interactive dashboard to visualize market research data for a major fashion brand. The dashboard helped executives track market trends, competitor analysis, and consumer preferences in real-time.",
       tools: "Tableau, SQL, Python, D3.js",
       year: "2023",
-      image: "/placeholder.svg"
+      image: "/placeholder.svg",
+      url: "https://example.com/market-dashboard",
+      urlMask: "View Dashboard"
     },
     {
       id: 4,
@@ -84,7 +90,9 @@ export default function Data() {
       description: "Performed sentiment analysis on social media data to gauge public perception of fashion brands. Used natural language processing techniques to analyze thousands of comments and posts, providing actionable insights to marketing teams.",
       tools: "Python, NLTK, spaCy, TensorFlow",
       year: "2021",
-      image: "/placeholder.svg"
+      image: "/placeholder.svg",
+      url: "https://example.com/sentiment-analysis",
+      urlMask: "View Analysis"
     },
     {
       id: 5,
@@ -93,7 +101,9 @@ export default function Data() {
       description: "Analyzed performance metrics across 50+ retail locations to identify key factors affecting sales. Created a scoring model that helped optimize store layouts and product placement, resulting in a 15% increase in revenue.",
       tools: "Python, SQL, Power BI, Excel",
       year: "2022",
-      image: "/placeholder.svg"
+      image: "/placeholder.svg",
+      url: "https://example.com/retail-performance",
+      urlMask: "View Report"
     }
   ];
 
