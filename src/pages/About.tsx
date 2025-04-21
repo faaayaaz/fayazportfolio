@@ -1,9 +1,41 @@
-
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { Edit } from "lucide-react";
+import EditAbout from "@/components/about/EditAbout";
 
 export default function About() {
+  const defaultAbout = {
+    title: "About Me",
+    image: "/lovable-uploads/357ea9c5-6a81-4980-afb3-0dda40df4919.png",
+    paragraphs: [
+      "I am a fashion model and data analyst with over 5 years of experience in both fields. My unique career path has allowed me to develop a rare combination of creative and analytical skills.",
+      "In the fashion industry, I've worked with renowned brands and photographers, while my data analysis expertise spans Python, SQL, and R, delivering insights that drive business decisions."
+    ],
+    tags: [
+      "Fashion Modeling",
+      "Data Analysis",
+      "Photography",
+      "Python",
+      "SQL"
+    ]
+  };
+
+  const [about, setAbout] = useState(defaultAbout);
+  const [editOpen, setEditOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAdmin = () => {
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      setIsAdmin(isLoggedIn);
+    };
+    checkAdmin();
+    window.addEventListener("storage", checkAdmin);
+    return () => window.removeEventListener("storage", checkAdmin);
+  }, []);
+
   const skills = [
     {
       category: "Fashion",
@@ -56,11 +88,22 @@ export default function About() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <img
-                  src="/lovable-uploads/effb464c-46e9-4f0e-9149-8adb1d3b1d22.png"
-                  alt="Portrait"
-                  className="rounded-lg w-full max-w-md shadow-lg mx-auto"
-                />
+                <div className="relative">
+                  <img
+                    src={about.image}
+                    alt="Portrait"
+                    className="rounded-lg w-full max-w-md shadow-lg mx-auto"
+                  />
+                  {isAdmin && (
+                    <button
+                      aria-label="Edit about image"
+                      className="absolute top-2 right-2 bg-white/80 hover:bg-white rounded-full shadow p-2"
+                      onClick={() => setEditOpen(true)}
+                    >
+                      <Edit className="h-5 w-5 text-data-blue" />
+                    </button>
+                  )}
+                </div>
               </motion.div>
               
               <motion.div
@@ -68,28 +111,43 @@ export default function About() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <h2 className="text-3xl font-serif mb-6">My Story</h2>
-                <p className="mb-4 text-gray-700">
-                  With an unusual combination of fashion modeling and data analysis expertise,
-                  I've built a career that bridges the creative and analytical worlds.
-                </p>
-                <p className="mb-4 text-gray-700">
-                  My journey began in the modeling industry 6 years ago, collaborating with diverse
-                  brands and photographers across editorial, commercial, and runway projects. This
-                  experience cultivated my eye for aesthetics and visual storytelling.
-                </p>
-                <p className="mb-4 text-gray-700">
-                  Simultaneously, I pursued my passion for data science, specializing in Python,
-                  SQL, and R. I've leveraged these skills to help companies make data-driven
-                  decisions and uncover valuable insights hidden in complex datasets.
-                </p>
-                <p className="text-gray-700">
-                  This dual career path has given me a unique perspective that allows me to approach
-                  problems with both creative intuition and analytical precision.
-                </p>
+                <div className="flex items-center gap-2 mb-2">
+                  <h2 className="text-3xl font-serif">{about.title}</h2>
+                  {isAdmin && (
+                    <button
+                      aria-label="Edit about content"
+                      className="ml-1 p-2 rounded-full bg-white/80 hover:bg-white shadow"
+                      onClick={() => setEditOpen(true)}
+                    >
+                      <Edit className="w-5 h-5 text-data-blue" />
+                    </button>
+                  )}
+                </div>
+                {about.paragraphs.map((p, idx) => (
+                  <p key={idx} className="mb-4 text-gray-700">{p}</p>
+                ))}
+                <div className="flex flex-wrap gap-3 mt-4">
+                  {about.tags.map((tag, i) => (
+                    <span
+                      key={i}
+                      className={tag === "Fashion Modeling" || tag === "Photography"
+                        ? "px-3 py-1 bg-fashion-beige text-fashion-charcoal rounded-full text-sm"
+                        : "px-3 py-1 bg-data-lightblue text-data-navy rounded-full text-sm"}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </motion.div>
             </div>
             
+            <EditAbout
+              open={editOpen}
+              onOpenChange={setEditOpen}
+              aboutData={about}
+              onSave={setAbout}
+            />
+
             {/* Skills Section */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
