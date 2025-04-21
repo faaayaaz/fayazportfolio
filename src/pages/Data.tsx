@@ -21,6 +21,11 @@ import { useState, useEffect } from "react";
 import { DataAdminControls } from "@/components/admin/DataAdminControls";
 import { Link2 } from "lucide-react";
 
+// Add new hooks for Profile and Skills Info management
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+
 export default function Data() {
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -107,6 +112,41 @@ export default function Data() {
     }
   ];
 
+  // Add state for profile and skills edit
+  const [profile, setProfile] = useState({
+    name: "Fayaz Mohamed",
+    role: "Data Analyst",
+    img: "/lovable-uploads/c2bb14be-8935-4258-a0cf-e45281db002f.png",
+    about: "Experienced Data Analyst with a passion for deriving actionable insights from complex data."
+  });
+  const [showProfileEdit, setShowProfileEdit] = useState(false);
+  const [skills, setSkills] = useState({
+    languages: [
+      "Python (Pandas, NumPy, scikit-learn)",
+      "R (tidyverse, ggplot2)",
+      "SQL (PostgreSQL, MySQL)",
+      "JavaScript (D3.js, Chart.js)"
+    ],
+    methods: [
+      "Statistical Analysis",
+      "Machine Learning",
+      "Time Series Analysis",
+      "Natural Language Processing"
+    ],
+    tools: [
+      "Tableau",
+      "Power BI",
+      "Matplotlib & Seaborn",
+      "D3.js"
+    ]
+  });
+  const [showSkillsEdit, setShowSkillsEdit] = useState(false);
+  const [languagesInput, setLanguagesInput] = useState(skills.languages.join("\n"));
+  const [methodsInput, setMethodsInput] = useState(skills.methods.join("\n"));
+  const [toolsInput, setToolsInput] = useState(skills.tools.join("\n"));
+
+  const { toast } = useToast();
+
   useEffect(() => {
     const checkAdmin = () => {
       const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -126,6 +166,39 @@ export default function Data() {
       project.id === updatedProject.id ? updatedProject : project
     );
     console.log("Project updated:", updatedProject);
+  };
+
+  // Handler for profile edit
+  const handleProfileEdit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setProfile({
+      ...profile,
+      // All fields are controlled below
+      name: (e.target as any).name.value,
+      role: (e.target as any).role.value,
+      img: (e.target as any).img.value,
+      about: (e.target as any).about.value,
+    });
+    setShowProfileEdit(false);
+    toast({
+      title: "Profile Updated",
+      description: "Your profile info has been updated."
+    });
+  };
+
+  // Handler for skills edit
+  const handleSkillsEdit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSkills({
+      languages: languagesInput.split("\n").filter(l => l.trim() !== ""),
+      methods: methodsInput.split("\n").filter(m => m.trim() !== ""),
+      tools: toolsInput.split("\n").filter(t => t.trim() !== "")
+    });
+    setShowSkillsEdit(false);
+    toast({
+      title: "Skills Updated",
+      description: "Your skills info has been updated."
+    });
   };
 
   return (
@@ -161,19 +234,114 @@ export default function Data() {
           </div>
         </section>
 
-        {/* Skills Overview */}
+        {/* Profile Card with Edit */}
+        <section className="section-padding bg-white">
+          <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 justify-between items-center mb-8">
+            <div className="flex items-center gap-6">
+              <img
+                src={profile.img}
+                alt="Profile"
+                className="rounded-full w-32 h-32 object-cover border-4 border-data-navy shadow"
+              />
+              <div>
+                <h2 className="text-2xl font-serif font-bold">{profile.name}</h2>
+                <p className="mb-1 text-lg text-data-blue">{profile.role}</p>
+                <p className="text-gray-700 max-w-md">{profile.about}</p>
+              </div>
+            </div>
+            <div>
+              <Button onClick={() => setShowProfileEdit(true)} variant="outline">
+                Edit Profile
+              </Button>
+              <Dialog open={showProfileEdit} onOpenChange={setShowProfileEdit}>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Edit Profile</DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={handleProfileEdit} className="space-y-4">
+                    <div>
+                      <label className="block mb-1 font-medium">Name</label>
+                      <Input name="name" defaultValue={profile.name} />
+                    </div>
+                    <div>
+                      <label className="block mb-1 font-medium">Role</label>
+                      <Input name="role" defaultValue={profile.role} />
+                    </div>
+                    <div>
+                      <label className="block mb-1 font-medium">Profile Image URL</label>
+                      <Input name="img" defaultValue={profile.img} />
+                    </div>
+                    <div>
+                      <label className="block mb-1 font-medium">About You</label>
+                      <Input name="about" defaultValue={profile.about} />
+                    </div>
+                    <div className="flex justify-end">
+                      <Button type="submit">Save Changes</Button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </div>
+        </section>
+
+        {/* Skills Overview with Edit */}
         <section className="section-padding bg-white">
           <div className="max-w-6xl mx-auto">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-3xl font-serif mb-12 text-center"
-            >
-              Data Analysis Toolkit
-            </motion.h2>
-            
+            <div className="flex items-center justify-between mb-2">
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                className="text-3xl font-serif mb-8 text-center"
+              >
+                Data Analysis Toolkit
+              </motion.h2>
+              <Button onClick={() => setShowSkillsEdit(true)} variant="outline">
+                Edit Skills
+              </Button>
+              {/* Modal: Edit Skills */}
+              <Dialog open={showSkillsEdit} onOpenChange={setShowSkillsEdit}>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Edit Skills & Toolkit</DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={handleSkillsEdit} className="space-y-4">
+                    <div>
+                      <label className="block mb-1 font-medium">Programming Languages</label>
+                      <textarea
+                        value={languagesInput}
+                        onChange={e => setLanguagesInput(e.target.value)}
+                        className="w-full border border-gray-300 p-2 rounded"
+                        rows={4}
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 font-medium">Analysis Methods</label>
+                      <textarea
+                        value={methodsInput}
+                        onChange={e => setMethodsInput(e.target.value)}
+                        className="w-full border border-gray-300 p-2 rounded"
+                        rows={4}
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 font-medium">Visualization Tools</label>
+                      <textarea
+                        value={toolsInput}
+                        onChange={e => setToolsInput(e.target.value)}
+                        className="w-full border border-gray-300 p-2 rounded"
+                        rows={4}
+                      />
+                    </div>
+                    <div className="flex justify-end">
+                      <Button type="submit">Save Changes</Button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -184,25 +352,14 @@ export default function Data() {
               >
                 <h3 className="text-xl font-serif mb-4 text-data-navy">Programming Languages</h3>
                 <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <div className="mr-3 h-2 w-2 bg-data-blue rounded-full"></div>
-                    <span>Python (Pandas, NumPy, scikit-learn)</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="mr-3 h-2 w-2 bg-data-blue rounded-full"></div>
-                    <span>R (tidyverse, ggplot2)</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="mr-3 h-2 w-2 bg-data-blue rounded-full"></div>
-                    <span>SQL (PostgreSQL, MySQL)</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="mr-3 h-2 w-2 bg-data-blue rounded-full"></div>
-                    <span>JavaScript (D3.js, Chart.js)</span>
-                  </li>
+                  {skills.languages.map((lang, idx) => (
+                    <li className="flex items-center" key={idx}>
+                      <div className="mr-3 h-2 w-2 bg-data-blue rounded-full"></div>
+                      <span>{lang}</span>
+                    </li>
+                  ))}
                 </ul>
               </motion.div>
-              
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -212,25 +369,14 @@ export default function Data() {
               >
                 <h3 className="text-xl font-serif mb-4 text-data-teal">Analysis Methods</h3>
                 <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <div className="mr-3 h-2 w-2 bg-data-teal rounded-full"></div>
-                    <span>Statistical Analysis</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="mr-3 h-2 w-2 bg-data-teal rounded-full"></div>
-                    <span>Machine Learning</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="mr-3 h-2 w-2 bg-data-teal rounded-full"></div>
-                    <span>Time Series Analysis</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="mr-3 h-2 w-2 bg-data-teal rounded-full"></div>
-                    <span>Natural Language Processing</span>
-                  </li>
+                  {skills.methods.map((m, idx) => (
+                    <li className="flex items-center" key={idx}>
+                      <div className="mr-3 h-2 w-2 bg-data-teal rounded-full"></div>
+                      <span>{m}</span>
+                    </li>
+                  ))}
                 </ul>
               </motion.div>
-              
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -240,22 +386,12 @@ export default function Data() {
               >
                 <h3 className="text-xl font-serif mb-4 text-data-slate">Visualization Tools</h3>
                 <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <div className="mr-3 h-2 w-2 bg-data-slate rounded-full"></div>
-                    <span>Tableau</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="mr-3 h-2 w-2 bg-data-slate rounded-full"></div>
-                    <span>Power BI</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="mr-3 h-2 w-2 bg-data-slate rounded-full"></div>
-                    <span>Matplotlib & Seaborn</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="mr-3 h-2 w-2 bg-data-slate rounded-full"></div>
-                    <span>D3.js</span>
-                  </li>
+                  {skills.tools.map((t, idx) => (
+                    <li className="flex items-center" key={idx}>
+                      <div className="mr-3 h-2 w-2 bg-data-slate rounded-full"></div>
+                      <span>{t}</span>
+                    </li>
+                  ))}
                 </ul>
               </motion.div>
             </div>

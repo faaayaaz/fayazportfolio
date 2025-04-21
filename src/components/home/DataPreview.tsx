@@ -3,19 +3,10 @@ import { useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 
 export default function DataPreview() {
   const chartRef = useRef<HTMLDivElement>(null);
-  
-  const data = [
-    { name: "Project A", value: 87 },
-    { name: "Project B", value: 63 },
-    { name: "Project C", value: 92 },
-    { name: "Project D", value: 71 },
-    { name: "Project E", value: 55 },
-  ];
-  
+
   const dataProjects = [
     {
       title: "E-commerce Customer Analysis",
@@ -50,20 +41,9 @@ export default function DataPreview() {
               solve complex business problems.
             </p>
           </div>
-          
+          {/* REMOVED PROJECT BAR CHART PER REQUEST */}
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-12">
-            <div ref={chartRef} className="chart-container">
-              <h3 className="text-xl font-serif mb-4">Project Success Metrics</h3>
-              <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="value" fill="#3E78B2" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            
             <div className="space-y-6">
               <h3 className="text-xl font-serif mb-2">My Analytical Approach</h3>
               <p className="text-gray-700">
@@ -117,6 +97,9 @@ export default function DataPreview() {
                   </div>
                 </div>
               </div>
+            </div>
+            <div>
+              {/* Could feature profile or other image/summary here in future */}
             </div>
           </div>
           
