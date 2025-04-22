@@ -1,15 +1,13 @@
+import { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Link2, Edit } from "lucide-react";
-import { ImageUpload } from "@/components/common/ImageUpload";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { DataAdminControls } from "@/components/admin/DataAdminControls";
-import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { ProjectCard } from "@/components/data/ProjectCard";
+import { SkillsSection } from "@/components/data/SkillsSection";
 
 export default function Data() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -198,17 +196,17 @@ export default function Data() {
       <Navbar />
       
       <main className="pt-24">
-        <section className="relative h-[50vh]">
+        <section className="relative h-[50vh] mb-16">
           <div className="absolute inset-0 bg-gradient-to-br from-data-navy/10 via-data-lightblue/20 to-background overflow-hidden">
-            <div className="h-full w-full bg-grid-pattern opacity-30"></div>
+            <div className="absolute inset-0 bg-grid-pattern opacity-30"></div>
           </div>
           <div className="relative h-full flex items-center justify-center px-4">
-            <div className="text-center">
+            <div className="text-center max-w-4xl mx-auto">
               <motion.h1
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="text-4xl md:text-5xl font-serif font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-data-navy via-data-blue to-data-teal"
+                className="text-4xl md:text-5xl font-serif font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-data-navy via-data-blue to-data-teal"
               >
                 Data Analysis Projects
               </motion.h1>
@@ -216,7 +214,7 @@ export default function Data() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-lg max-w-2xl mx-auto text-muted-foreground"
+                className="text-lg md:text-xl max-w-2xl mx-auto text-muted-foreground leading-relaxed"
               >
                 Exploring complex datasets to extract meaningful insights
                 using Python, SQL, R, and visualization tools.
@@ -225,7 +223,7 @@ export default function Data() {
           </div>
         </section>
 
-        <section className="section-padding bg-card">
+        <section className="section-padding bg-card backdrop-blur-sm border-y border-border">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 justify-between items-start">
             <div className="flex items-start gap-6 w-full md:w-auto">
               <div className="relative">
@@ -247,7 +245,7 @@ export default function Data() {
               </div>
               <div>
                 <h2 className="text-2xl font-serif font-bold text-foreground">{profile.name}</h2>
-                <p className="mb-1 text-lg text-primary">{profile.role}</p>
+                <p className="mb-2 text-lg text-primary">{profile.role}</p>
                 <p className="text-muted-foreground max-w-md">{profile.about}</p>
               </div>
             </div>
@@ -255,82 +253,11 @@ export default function Data() {
         </section>
 
         <section className="section-padding">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex items-center justify-between mb-8">
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-                className="text-3xl font-serif text-foreground"
-              >
-                Data Analysis Toolkit
-              </motion.h2>
-              {isAdmin && (
-                <Button 
-                  onClick={() => setShowSkillsEdit(true)} 
-                  variant="outline"
-                  className="bg-accent hover:bg-accent/80"
-                >
-                  <Edit className="h-4 w-4 mr-2" />
-                  Edit Skills
-                </Button>
-              )}
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
-                className="bg-gradient-to-br from-background to-accent/20 p-6 rounded-lg shadow-md border border-border"
-              >
-                <h3 className="text-xl font-serif mb-4 text-foreground">Programming Languages</h3>
-                <ul className="space-y-3">
-                  {skills.languages.map((lang, idx) => (
-                    <li className="flex items-center" key={idx}>
-                      <div className="mr-3 h-2 w-2 bg-primary rounded-full"></div>
-                      <span className="text-muted-foreground">{lang}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="bg-gradient-to-br from-background to-accent/20 p-6 rounded-lg shadow-md border border-border"
-              >
-                <h3 className="text-xl font-serif mb-4 text-foreground">Analysis Methods</h3>
-                <ul className="space-y-3">
-                  {skills.methods.map((m, idx) => (
-                    <li className="flex items-center" key={idx}>
-                      <div className="mr-3 h-2 w-2 bg-primary rounded-full"></div>
-                      <span className="text-muted-foreground">{m}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                viewport={{ once: true }}
-                className="bg-gradient-to-br from-background to-accent/20 p-6 rounded-lg shadow-md border border-border"
-              >
-                <h3 className="text-xl font-serif mb-4 text-foreground">Visualization Tools</h3>
-                <ul className="space-y-3">
-                  {skills.tools.map((t, idx) => (
-                    <li className="flex items-center" key={idx}>
-                      <div className="mr-3 h-2 w-2 bg-primary rounded-full"></div>
-                      <span className="text-muted-foreground">{t}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            </div>
-          </div>
+          <SkillsSection 
+            skills={skills}
+            isAdmin={isAdmin}
+            onEdit={() => setShowSkillsEdit(true)}
+          />
         </section>
 
         <section className="section-padding bg-accent/10">
@@ -347,53 +274,13 @@ export default function Data() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {dataProjects.map((project, index) => (
-                <motion.div
+                <ProjectCard
                   key={project.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="group relative bg-card hover:bg-accent/5 border border-border rounded-lg shadow-md transition-all duration-300 overflow-visible"
-                >
-                  {isAdmin && (
-                    <DataAdminControls 
-                      project={project}
-                      onUpdate={handleProjectUpdate}
-                    />
-                  )}
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-xl font-serif text-foreground group-hover:text-primary transition-colors">
-                        {project.title}
-                      </h3>
-                      <span className="text-xs uppercase tracking-wider bg-accent/30 text-accent-foreground px-2 py-1 rounded">
-                        {project.category}
-                      </span>
-                    </div>
-                    <p className="text-muted-foreground mb-4">{project.description}</p>
-                    <div className="flex flex-wrap items-center justify-between mt-6">
-                      <div className="text-sm text-muted-foreground">
-                        <span className="font-medium">Tools:</span> {project.tools}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {project.url && (
-                          <a
-                            href={project.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors"
-                          >
-                            <Link2 className="h-4 w-4" />
-                            {project.urlMask || 'View Project'}
-                          </a>
-                        )}
-                        <div className="text-sm text-muted-foreground">
-                          <span className="font-medium">Year:</span> {project.year}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
+                  project={project}
+                  isAdmin={isAdmin}
+                  onUpdate={handleProjectUpdate}
+                  index={index}
+                />
               ))}
             </div>
           </div>
@@ -440,9 +327,9 @@ export default function Data() {
               Update your skills by adding or removing items. Each skill should be on a new line.
             </DialogDescription>
           </DialogHeader>
-          <form onSubmit={handleSkillsEdit} className="space-y-4">
+          <form onSubmit={handleSkillsEdit} className="space-y-6">
             <div>
-              <label className="block mb-1 font-medium">Programming Languages</label>
+              <label className="block mb-2 font-medium">Programming Languages</label>
               <Textarea
                 value={languagesInput}
                 onChange={e => setLanguagesInput(e.target.value)}
@@ -451,7 +338,7 @@ export default function Data() {
               />
             </div>
             <div>
-              <label className="block mb-1 font-medium">Analysis Methods</label>
+              <label className="block mb-2 font-medium">Analysis Methods</label>
               <Textarea
                 value={methodsInput}
                 onChange={e => setMethodsInput(e.target.value)}
@@ -460,7 +347,7 @@ export default function Data() {
               />
             </div>
             <div>
-              <label className="block mb-1 font-medium">Visualization Tools</label>
+              <label className="block mb-2 font-medium">Visualization Tools</label>
               <Textarea
                 value={toolsInput}
                 onChange={e => setToolsInput(e.target.value)}
