@@ -14,15 +14,15 @@ export default function FashionPreview() {
       description: "City-inspired fashion shoot featuring contemporary urban styles.",
     },
     {
-      title: "Winter Styles",
+      title: "Winter Campaign",
       image: "/lovable-uploads/26d9f84d-93af-4f3f-935d-21c6ebdf937f.png",
-      description: "Cold weather collection highlighting functional yet stylish winter wear.",
+      description: "Seasonal collection highlighting elegant winter fashion.",
     },
     {
-      title: "Summer Lookbook",
-      image: "/lovable-uploads/7e04893a-ef02-44c6-96ad-5e68880373bb.png",
-      description: "Bright and colorful summer styles for the season.",
-    },
+      title: "Spring Editorial",
+      image: "/lovable-uploads/357ea9c5-6a81-4980-afb3-0dda40df4919.png",
+      description: "Fresh and vibrant spring styles in an artistic setting.",
+    }
   ];
 
   return (

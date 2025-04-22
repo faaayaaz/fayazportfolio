@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,6 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { FashionAdminControls } from "@/components/admin/FashionAdminControls";
 
-// Define the Fashion Project type
 interface FashionProject {
   id: number;
   title: string;
@@ -29,81 +27,97 @@ const Fashion = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedProject, setSelectedProject] = useState<FashionProject | null>(null);
 
-  // Categories for filter
   const categories = ["All", "Editorial", "Commercial", "Runway", "Campaign"];
 
-  // Sample fashion projects data
   const fashionProjects: FashionProject[] = [
     {
       id: 1,
-      title: "Summer Collection",
+      title: "Urban Collection",
       category: "Editorial",
       image: "/lovable-uploads/1cb96b82-31c8-4f79-9365-eb23a4bfc4c8.png",
-      description: "A vibrant editorial shoot showcasing the latest summer trends with lightweight fabrics and bold colors.",
+      description: "A vibrant editorial shoot showcasing the latest urban trends with modern silhouettes.",
       client: "Fashion Magazine",
       photographer: "Jane Smith",
       year: 2023
     },
     {
       id: 2,
-      title: "Urban Elegance",
+      title: "Winter Elegance",
       category: "Commercial",
       image: "/lovable-uploads/26d9f84d-93af-4f3f-935d-21c6ebdf937f.png",
-      description: "Commercial campaign for a premium clothing brand, shot in the heart of the city.",
+      description: "Commercial campaign highlighting luxury winter wear and accessories.",
       client: "Luxury Brand Co.",
       year: 2023
     },
     {
       id: 3,
-      title: "Paris Fashion Week",
+      title: "Runway Moments",
       category: "Runway",
       image: "/lovable-uploads/357ea9c5-6a81-4980-afb3-0dda40df4919.png",
-      description: "Walking for a renowned designer at Paris Fashion Week, showcasing avant-garde couture pieces.",
+      description: "Capturing the essence of haute couture on the runway.",
       client: "Designer House",
-      year: 2022
+      year: 2023
     },
     {
       id: 4,
-      title: "Winter Collection",
+      title: "Summer Collection",
       category: "Campaign",
       image: "/lovable-uploads/7e04893a-ef02-44c6-96ad-5e68880373bb.png",
-      description: "A seasonal campaign for winter apparel, shot in a snowy mountain setting.",
-      client: "Winter Apparel Inc.",
+      description: "A vibrant summer campaign showcasing seasonal trends.",
+      client: "Summer Fashion Ltd.",
       photographer: "Michael Brown",
-      year: 2022
+      year: 2023
     },
     {
       id: 5,
-      title: "Minimalist Series",
+      title: "Artistic Series",
       category: "Editorial",
       image: "/lovable-uploads/ae139fdd-c90a-4407-b79f-1f8ebad5dc67.png",
-      description: "A clean, minimalist editorial focusing on shape, form, and negative space.",
-      client: "Design Quarterly",
-      photographer: "Sarah Johnson",
+      description: "An artistic interpretation of contemporary fashion.",
+      client: "Art & Fashion Magazine",
+      photographer: "Sarah Wilson",
       year: 2023
     },
     {
       id: 6,
-      title: "Spring Campaign",
+      title: "Spring Dreams",
       category: "Campaign",
       image: "/lovable-uploads/dd473452-7149-47a4-856e-075831b4b5a1.png",
-      description: "A fresh and vibrant campaign showcasing spring collection with floral motifs.",
+      description: "A dreamy spring campaign featuring floral motifs and light fabrics.",
       client: "Spring Fashion Ltd.",
       year: 2023
     },
     {
       id: 7,
-      title: "Accessories Spotlight",
+      title: "Accessories Edit",
       category: "Commercial",
       image: "/lovable-uploads/effb464c-46e9-4f0e-9149-8adb1d3b1d22.png",
-      description: "Commercial shoot focused on premium accessories and jewelry pieces.",
+      description: "Showcasing premium accessories and jewelry pieces.",
       client: "Luxe Accessories",
       photographer: "David Lee",
-      year: 2022
+      year: 2023
+    },
+    {
+      id: 8,
+      title: "Autumn Vibes",
+      category: "Editorial",
+      image: "/lovable-uploads/4bdd5663-8cc1-4492-bc0b-e137ad9812ad.png",
+      description: "An editorial exploring autumn fashion and textures.",
+      client: "Style Magazine",
+      year: 2023
+    },
+    {
+      id: 9,
+      title: "Modern Minimalism",
+      category: "Campaign",
+      image: "/lovable-uploads/83c8a021-5998-44ec-ad17-1c9a1d09695a.png",
+      description: "A minimalist approach to modern fashion.",
+      client: "Minimalist Fashion Co.",
+      photographer: "Emma White",
+      year: 2023
     }
   ];
 
-  // Filter projects based on active category
   const filteredProjects = activeCategory === "All"
     ? fashionProjects
     : fashionProjects.filter(project => project.category === activeCategory);
@@ -127,7 +141,6 @@ const Fashion = () => {
       <Navbar />
       
       <main className="pt-24">
-        {/* Hero Section */}
         <section className="relative h-[50vh] bg-fashion-beige/30">
           <div className="absolute inset-0 overflow-hidden">
             <img
@@ -159,10 +172,8 @@ const Fashion = () => {
           </div>
         </section>
 
-        {/* Portfolio Section */}
         <section className="py-12 px-4 md:px-8 lg:px-16">
           <div className="max-w-6xl mx-auto">
-            {/* Category Filter */}
             <div className="flex flex-wrap justify-center gap-2 mb-12">
               {categories.map((category) => (
                 <Button
@@ -180,7 +191,6 @@ const Fashion = () => {
               ))}
             </div>
             
-            {/* Gallery Grid */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -215,7 +225,6 @@ const Fashion = () => {
         </section>
       </main>
       
-      {/* Project Detail Dialog */}
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
         {selectedProject && (
           <DialogContent className="max-w-4xl">
