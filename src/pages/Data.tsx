@@ -20,11 +20,12 @@ import {
 } from "recharts";
 import { useState, useEffect } from "react";
 import { DataAdminControls } from "@/components/admin/DataAdminControls";
-import { Link2 } from "lucide-react";
+import { Link2, Edit } from "lucide-react";
 import { ImageUpload } from "@/components/common/ImageUpload";
 import { useToast } from "@/hooks/use-toast";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function Data() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -161,6 +162,13 @@ export default function Data() {
     };
   }, []);
 
+  // Update text inputs when skills change
+  useEffect(() => {
+    setLanguagesInput(skills.languages.join("\n"));
+    setMethodsInput(skills.methods.join("\n"));
+    setToolsInput(skills.tools.join("\n"));
+  }, [skills]);
+
   const handleProjectUpdate = (updatedProject: any) => {
     const updatedProjects = dataProjects.map(project => 
       project.id === updatedProject.id ? updatedProject : project
@@ -170,13 +178,15 @@ export default function Data() {
 
   const handleProfileEdit = (e: React.FormEvent) => {
     e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    
     setProfile({
-      ...profile,
-      name: (e.target as any).name.value,
-      role: (e.target as any).role.value,
+      name: formData.get('name') as string,
+      role: formData.get('role') as string,
       img: profileImage,
-      about: (e.target as any).about.value,
+      about: formData.get('about') as string,
     });
+    
     setShowProfileEdit(false);
     toast({
       title: "Profile Updated",
@@ -186,11 +196,13 @@ export default function Data() {
 
   const handleSkillsEdit = (e: React.FormEvent) => {
     e.preventDefault();
+    
     setSkills({
       languages: languagesInput.split("\n").filter(l => l.trim() !== ""),
       methods: methodsInput.split("\n").filter(m => m.trim() !== ""),
       tools: toolsInput.split("\n").filter(t => t.trim() !== "")
     });
+    
     setShowSkillsEdit(false);
     toast({
       title: "Skills Updated",
@@ -247,6 +259,7 @@ export default function Data() {
             <div>
               {isAdmin && (
                 <Button onClick={() => setShowProfileEdit(true)} variant="outline">
+                  <Edit className="h-4 w-4 mr-2" />
                   Edit Profile
                 </Button>
               )}
@@ -254,6 +267,9 @@ export default function Data() {
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>Edit Profile</DialogTitle>
+                    <DialogDescription>
+                      Make changes to your profile information here.
+                    </DialogDescription>
                   </DialogHeader>
                   <form onSubmit={handleProfileEdit} className="space-y-4">
                     <div>
@@ -267,7 +283,7 @@ export default function Data() {
                     <ImageUpload value={profileImage} onChange={setProfileImage} label="Profile Image"/>
                     <div>
                       <label className="block mb-1 font-medium">About You</label>
-                      <Input name="about" defaultValue={profile.about} />
+                      <Textarea name="about" defaultValue={profile.about} rows={3} />
                     </div>
                     <div className="flex justify-end">
                       <Button type="submit">Save Changes</Button>
@@ -281,55 +297,64 @@ export default function Data() {
 
         <section className="section-padding bg-white">
           <div className="max-w-6xl mx-auto">
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-8">
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
-                className="text-3xl font-serif mb-8 text-center"
+                className="text-3xl font-serif text-center"
               >
                 Data Analysis Toolkit
               </motion.h2>
               {isAdmin && (
-                <Button onClick={() => setShowSkillsEdit(true)} variant="outline">
+                <Button 
+                  onClick={() => setShowSkillsEdit(true)} 
+                  variant="outline"
+                  className="bg-data-lightblue hover:bg-data-lightblue/80 text-data-navy"
+                >
+                  <Edit className="h-4 w-4 mr-2" />
                   Edit Skills
                 </Button>
               )}
               <Dialog open={showSkillsEdit} onOpenChange={setShowSkillsEdit}>
-                <DialogContent>
+                <DialogContent className="max-w-2xl">
                   <DialogHeader>
                     <DialogTitle>Edit Skills & Toolkit</DialogTitle>
+                    <DialogDescription>
+                      Update your skills by adding or removing items. Each skill should be on a new line.
+                    </DialogDescription>
                   </DialogHeader>
                   <form onSubmit={handleSkillsEdit} className="space-y-4">
                     <div>
                       <label className="block mb-1 font-medium">Programming Languages</label>
-                      <textarea
+                      <Textarea
                         value={languagesInput}
                         onChange={e => setLanguagesInput(e.target.value)}
-                        className="w-full border border-gray-300 p-2 rounded"
-                        rows={4}
+                        className="w-full min-h-[120px]"
+                        placeholder="Each language on a new line"
                       />
                     </div>
                     <div>
                       <label className="block mb-1 font-medium">Analysis Methods</label>
-                      <textarea
+                      <Textarea
                         value={methodsInput}
                         onChange={e => setMethodsInput(e.target.value)}
-                        className="w-full border border-gray-300 p-2 rounded"
-                        rows={4}
+                        className="w-full min-h-[120px]" 
+                        placeholder="Each method on a new line"
                       />
                     </div>
                     <div>
                       <label className="block mb-1 font-medium">Visualization Tools</label>
-                      <textarea
+                      <Textarea
                         value={toolsInput}
                         onChange={e => setToolsInput(e.target.value)}
-                        className="w-full border border-gray-300 p-2 rounded"
-                        rows={4}
+                        className="w-full min-h-[120px]"
+                        placeholder="Each tool on a new line"
                       />
                     </div>
-                    <div className="flex justify-end">
+                    <div className="flex justify-end gap-2">
+                      <Button type="button" variant="outline" onClick={() => setShowSkillsEdit(false)}>Cancel</Button>
                       <Button type="submit">Save Changes</Button>
                     </div>
                   </form>
@@ -342,7 +367,7 @@ export default function Data() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
                 viewport={{ once: true }}
-                className="bg-white p-6 rounded-lg shadow-md border border-gray-100"
+                className="bg-gradient-to-br from-data-lightblue/20 to-white p-6 rounded-lg shadow-md border border-data-lightblue/30"
               >
                 <h3 className="text-xl font-serif mb-4 text-data-navy">Programming Languages</h3>
                 <ul className="space-y-3">
@@ -359,7 +384,7 @@ export default function Data() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 viewport={{ once: true }}
-                className="bg-white p-6 rounded-lg shadow-md border border-gray-100"
+                className="bg-gradient-to-br from-data-teal/20 to-white p-6 rounded-lg shadow-md border border-data-teal/30"
               >
                 <h3 className="text-xl font-serif mb-4 text-data-teal">Analysis Methods</h3>
                 <ul className="space-y-3">
@@ -376,7 +401,7 @@ export default function Data() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
                 viewport={{ once: true }}
-                className="bg-white p-6 rounded-lg shadow-md border border-gray-100"
+                className="bg-gradient-to-br from-data-slate/20 to-white p-6 rounded-lg shadow-md border border-data-slate/30"
               >
                 <h3 className="text-xl font-serif mb-4 text-data-slate">Visualization Tools</h3>
                 <ul className="space-y-3">
