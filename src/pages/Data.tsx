@@ -1,31 +1,15 @@
-
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  BarChart, 
-  Bar, 
-  LineChart, 
-  Line, 
-  PieChart, 
-  Pie, 
-  Cell, 
-  ResponsiveContainer, 
-  XAxis, 
-  YAxis, 
-  Tooltip, 
-  Legend
-} from "recharts";
-import { useState, useEffect } from "react";
-import { DataAdminControls } from "@/components/admin/DataAdminControls";
 import { Link2, Edit } from "lucide-react";
 import { ImageUpload } from "@/components/common/ImageUpload";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { DataAdminControls } from "@/components/admin/DataAdminControls";
+import { useState, useEffect } from "react";
 
 export default function Data() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -162,7 +146,6 @@ export default function Data() {
     };
   }, []);
 
-  // Update text inputs when skills change
   useEffect(() => {
     setLanguagesInput(skills.languages.join("\n"));
     setMethodsInput(skills.methods.join("\n"));
@@ -215,8 +198,8 @@ export default function Data() {
       <Navbar />
       
       <main className="pt-24">
-        <section className="relative h-[50vh] bg-data-lightblue/30">
-          <div className="absolute inset-0 overflow-hidden bg-data-navy/10">
+        <section className="relative h-[50vh]">
+          <div className="absolute inset-0 bg-gradient-to-br from-data-navy/10 via-data-lightblue/20 to-background overflow-hidden">
             <div className="h-full w-full bg-grid-pattern opacity-30"></div>
           </div>
           <div className="relative h-full flex items-center justify-center px-4">
@@ -225,7 +208,7 @@ export default function Data() {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="text-4xl md:text-5xl font-serif font-bold mb-4"
+                className="text-4xl md:text-5xl font-serif font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-data-navy via-data-blue to-data-teal"
               >
                 Data Analysis Projects
               </motion.h1>
@@ -233,7 +216,7 @@ export default function Data() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-lg max-w-2xl mx-auto"
+                className="text-lg max-w-2xl mx-auto text-muted-foreground"
               >
                 Exploring complex datasets to extract meaningful insights
                 using Python, SQL, R, and visualization tools.
@@ -242,60 +225,36 @@ export default function Data() {
           </div>
         </section>
 
-        <section className="section-padding bg-white">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 justify-between items-center mb-8">
-            <div className="flex items-center gap-6">
-              <img
-                src={profile.img}
-                alt="Profile"
-                className="rounded-full w-32 h-32 object-cover border-4 border-data-navy shadow"
-              />
-              <div>
-                <h2 className="text-2xl font-serif font-bold">{profile.name}</h2>
-                <p className="mb-1 text-lg text-data-blue">{profile.role}</p>
-                <p className="text-gray-700 max-w-md">{profile.about}</p>
+        <section className="section-padding bg-card">
+          <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 justify-between items-start">
+            <div className="flex items-start gap-6 w-full md:w-auto">
+              <div className="relative">
+                <img
+                  src={profile.img}
+                  alt="Profile"
+                  className="rounded-full w-32 h-32 object-cover border-4 border-primary/20 shadow-xl"
+                />
+                {isAdmin && (
+                  <Button
+                    onClick={() => setShowProfileEdit(true)}
+                    variant="outline"
+                    size="icon"
+                    className="absolute -bottom-2 -right-2 rounded-full shadow-lg bg-background hover:bg-accent"
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                )}
               </div>
-            </div>
-            <div>
-              {isAdmin && (
-                <Button onClick={() => setShowProfileEdit(true)} variant="outline">
-                  <Edit className="h-4 w-4 mr-2" />
-                  Edit Profile
-                </Button>
-              )}
-              <Dialog open={showProfileEdit} onOpenChange={setShowProfileEdit}>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Edit Profile</DialogTitle>
-                    <DialogDescription>
-                      Make changes to your profile information here.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <form onSubmit={handleProfileEdit} className="space-y-4">
-                    <div>
-                      <label className="block mb-1 font-medium">Name</label>
-                      <Input name="name" defaultValue={profile.name} />
-                    </div>
-                    <div>
-                      <label className="block mb-1 font-medium">Role</label>
-                      <Input name="role" defaultValue={profile.role} />
-                    </div>
-                    <ImageUpload value={profileImage} onChange={setProfileImage} label="Profile Image"/>
-                    <div>
-                      <label className="block mb-1 font-medium">About You</label>
-                      <Textarea name="about" defaultValue={profile.about} rows={3} />
-                    </div>
-                    <div className="flex justify-end">
-                      <Button type="submit">Save Changes</Button>
-                    </div>
-                  </form>
-                </DialogContent>
-              </Dialog>
+              <div>
+                <h2 className="text-2xl font-serif font-bold text-foreground">{profile.name}</h2>
+                <p className="mb-1 text-lg text-primary">{profile.role}</p>
+                <p className="text-muted-foreground max-w-md">{profile.about}</p>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="section-padding bg-white">
+        <section className="section-padding">
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center justify-between mb-8">
               <motion.h2
@@ -303,7 +262,7 @@ export default function Data() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
-                className="text-3xl font-serif text-center"
+                className="text-3xl font-serif text-foreground"
               >
                 Data Analysis Toolkit
               </motion.h2>
@@ -311,55 +270,12 @@ export default function Data() {
                 <Button 
                   onClick={() => setShowSkillsEdit(true)} 
                   variant="outline"
-                  className="bg-data-lightblue hover:bg-data-lightblue/80 text-data-navy"
+                  className="bg-accent hover:bg-accent/80"
                 >
                   <Edit className="h-4 w-4 mr-2" />
                   Edit Skills
                 </Button>
               )}
-              <Dialog open={showSkillsEdit} onOpenChange={setShowSkillsEdit}>
-                <DialogContent className="max-w-2xl">
-                  <DialogHeader>
-                    <DialogTitle>Edit Skills & Toolkit</DialogTitle>
-                    <DialogDescription>
-                      Update your skills by adding or removing items. Each skill should be on a new line.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <form onSubmit={handleSkillsEdit} className="space-y-4">
-                    <div>
-                      <label className="block mb-1 font-medium">Programming Languages</label>
-                      <Textarea
-                        value={languagesInput}
-                        onChange={e => setLanguagesInput(e.target.value)}
-                        className="w-full min-h-[120px]"
-                        placeholder="Each language on a new line"
-                      />
-                    </div>
-                    <div>
-                      <label className="block mb-1 font-medium">Analysis Methods</label>
-                      <Textarea
-                        value={methodsInput}
-                        onChange={e => setMethodsInput(e.target.value)}
-                        className="w-full min-h-[120px]" 
-                        placeholder="Each method on a new line"
-                      />
-                    </div>
-                    <div>
-                      <label className="block mb-1 font-medium">Visualization Tools</label>
-                      <Textarea
-                        value={toolsInput}
-                        onChange={e => setToolsInput(e.target.value)}
-                        className="w-full min-h-[120px]"
-                        placeholder="Each tool on a new line"
-                      />
-                    </div>
-                    <div className="flex justify-end gap-2">
-                      <Button type="button" variant="outline" onClick={() => setShowSkillsEdit(false)}>Cancel</Button>
-                      <Button type="submit">Save Changes</Button>
-                    </div>
-                  </form>
-                </DialogContent>
-              </Dialog>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <motion.div
@@ -367,14 +283,14 @@ export default function Data() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
                 viewport={{ once: true }}
-                className="bg-gradient-to-br from-data-lightblue/20 to-white p-6 rounded-lg shadow-md border border-data-lightblue/30"
+                className="bg-gradient-to-br from-background to-accent/20 p-6 rounded-lg shadow-md border border-border"
               >
-                <h3 className="text-xl font-serif mb-4 text-data-navy">Programming Languages</h3>
+                <h3 className="text-xl font-serif mb-4 text-foreground">Programming Languages</h3>
                 <ul className="space-y-3">
                   {skills.languages.map((lang, idx) => (
                     <li className="flex items-center" key={idx}>
-                      <div className="mr-3 h-2 w-2 bg-data-blue rounded-full"></div>
-                      <span>{lang}</span>
+                      <div className="mr-3 h-2 w-2 bg-primary rounded-full"></div>
+                      <span className="text-muted-foreground">{lang}</span>
                     </li>
                   ))}
                 </ul>
@@ -384,14 +300,14 @@ export default function Data() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 viewport={{ once: true }}
-                className="bg-gradient-to-br from-data-teal/20 to-white p-6 rounded-lg shadow-md border border-data-teal/30"
+                className="bg-gradient-to-br from-background to-accent/20 p-6 rounded-lg shadow-md border border-border"
               >
-                <h3 className="text-xl font-serif mb-4 text-data-teal">Analysis Methods</h3>
+                <h3 className="text-xl font-serif mb-4 text-foreground">Analysis Methods</h3>
                 <ul className="space-y-3">
                   {skills.methods.map((m, idx) => (
                     <li className="flex items-center" key={idx}>
-                      <div className="mr-3 h-2 w-2 bg-data-teal rounded-full"></div>
-                      <span>{m}</span>
+                      <div className="mr-3 h-2 w-2 bg-primary rounded-full"></div>
+                      <span className="text-muted-foreground">{m}</span>
                     </li>
                   ))}
                 </ul>
@@ -401,14 +317,14 @@ export default function Data() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
                 viewport={{ once: true }}
-                className="bg-gradient-to-br from-data-slate/20 to-white p-6 rounded-lg shadow-md border border-data-slate/30"
+                className="bg-gradient-to-br from-background to-accent/20 p-6 rounded-lg shadow-md border border-border"
               >
-                <h3 className="text-xl font-serif mb-4 text-data-slate">Visualization Tools</h3>
+                <h3 className="text-xl font-serif mb-4 text-foreground">Visualization Tools</h3>
                 <ul className="space-y-3">
                   {skills.tools.map((t, idx) => (
                     <li className="flex items-center" key={idx}>
-                      <div className="mr-3 h-2 w-2 bg-data-slate rounded-full"></div>
-                      <span>{t}</span>
+                      <div className="mr-3 h-2 w-2 bg-primary rounded-full"></div>
+                      <span className="text-muted-foreground">{t}</span>
                     </li>
                   ))}
                 </ul>
@@ -417,38 +333,14 @@ export default function Data() {
           </div>
         </section>
 
-        <section className="section-padding bg-gray-50">
+        <section className="section-padding bg-accent/10">
           <div className="max-w-6xl mx-auto">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              className="text-3xl font-serif mb-6 text-center"
-            >
-              Data Visualization Showcase
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="text-center max-w-2xl mx-auto mb-12"
-            >
-              Examples of data visualization techniques used in various projects
-              to communicate complex information effectively.
-            </motion.p>
-          </div>
-        </section>
-
-        <section className="section-padding">
-          <div className="max-w-6xl mx-auto">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-3xl font-serif mb-12 text-center"
+              className="text-3xl font-serif mb-12 text-center text-foreground"
             >
               Featured Data Projects
             </motion.h2>
@@ -461,7 +353,7 @@ export default function Data() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="data-card overflow-visible relative"
+                  className="group relative bg-card hover:bg-accent/5 border border-border rounded-lg shadow-md transition-all duration-300 overflow-visible"
                 >
                   {isAdmin && (
                     <DataAdminControls 
@@ -471,14 +363,16 @@ export default function Data() {
                   )}
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-xl font-serif text-data-navy">{project.title}</h3>
-                      <span className="text-xs uppercase tracking-wider bg-data-lightblue/30 text-data-navy px-2 py-1 rounded">
+                      <h3 className="text-xl font-serif text-foreground group-hover:text-primary transition-colors">
+                        {project.title}
+                      </h3>
+                      <span className="text-xs uppercase tracking-wider bg-accent/30 text-accent-foreground px-2 py-1 rounded">
                         {project.category}
                       </span>
                     </div>
-                    <p className="text-gray-700 mb-4">{project.description}</p>
+                    <p className="text-muted-foreground mb-4">{project.description}</p>
                     <div className="flex flex-wrap items-center justify-between mt-6">
-                      <div className="text-sm text-data-slate">
+                      <div className="text-sm text-muted-foreground">
                         <span className="font-medium">Tools:</span> {project.tools}
                       </div>
                       <div className="flex items-center gap-2">
@@ -487,13 +381,13 @@ export default function Data() {
                             href={project.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-1 text-sm text-data-blue hover:text-data-blue/80"
+                            className="flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors"
                           >
                             <Link2 className="h-4 w-4" />
                             {project.urlMask || 'View Project'}
                           </a>
                         )}
-                        <div className="text-sm text-data-slate">
+                        <div className="text-sm text-muted-foreground">
                           <span className="font-medium">Year:</span> {project.year}
                         </div>
                       </div>
@@ -505,6 +399,84 @@ export default function Data() {
           </div>
         </section>
       </main>
+      
+      <Dialog open={showProfileEdit} onOpenChange={setShowProfileEdit}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Edit Profile</DialogTitle>
+            <DialogDescription>
+              Make changes to your profile information here.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleProfileEdit} className="space-y-4">
+            <div>
+              <label className="block mb-1 font-medium">Name</label>
+              <Input name="name" defaultValue={profile.name} className="w-full" />
+            </div>
+            <div>
+              <label className="block mb-1 font-medium">Role</label>
+              <Input name="role" defaultValue={profile.role} className="w-full" />
+            </div>
+            <ImageUpload value={profileImage} onChange={setProfileImage} label="Profile Image"/>
+            <div>
+              <label className="block mb-1 font-medium">About You</label>
+              <Textarea name="about" defaultValue={profile.about} rows={3} className="w-full" />
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button type="button" variant="outline" onClick={() => setShowProfileEdit(false)}>
+                Cancel
+              </Button>
+              <Button type="submit">Save Changes</Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showSkillsEdit} onOpenChange={setShowSkillsEdit}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Edit Skills & Toolkit</DialogTitle>
+            <DialogDescription>
+              Update your skills by adding or removing items. Each skill should be on a new line.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSkillsEdit} className="space-y-4">
+            <div>
+              <label className="block mb-1 font-medium">Programming Languages</label>
+              <Textarea
+                value={languagesInput}
+                onChange={e => setLanguagesInput(e.target.value)}
+                className="w-full min-h-[120px]"
+                placeholder="Each language on a new line"
+              />
+            </div>
+            <div>
+              <label className="block mb-1 font-medium">Analysis Methods</label>
+              <Textarea
+                value={methodsInput}
+                onChange={e => setMethodsInput(e.target.value)}
+                className="w-full min-h-[120px]"
+                placeholder="Each method on a new line"
+              />
+            </div>
+            <div>
+              <label className="block mb-1 font-medium">Visualization Tools</label>
+              <Textarea
+                value={toolsInput}
+                onChange={e => setToolsInput(e.target.value)}
+                className="w-full min-h-[120px]"
+                placeholder="Each tool on a new line"
+              />
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button type="button" variant="outline" onClick={() => setShowSkillsEdit(false)}>
+                Cancel
+              </Button>
+              <Button type="submit">Save Changes</Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
       
       <Footer />
     </div>
