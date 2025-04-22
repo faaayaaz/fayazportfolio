@@ -6,8 +6,11 @@ import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Edit } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { ProjectCard } from "@/components/data/ProjectCard";
 import { SkillsSection } from "@/components/data/SkillsSection";
+import { ImageUpload } from "@/components/common/ImageUpload";
 
 export default function Data() {
   const [isAdmin, setIsAdmin] = useState(false);
