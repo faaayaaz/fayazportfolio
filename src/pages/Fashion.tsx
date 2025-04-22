@@ -99,10 +99,10 @@ const Fashion = () => {
     },
     {
       id: 8,
-      title: "Autumn Vibes",
+      title: "Fall Collection",
       category: "Editorial",
       image: "/lovable-uploads/4bdd5663-8cc1-4492-bc0b-e137ad9812ad.png",
-      description: "An editorial exploring autumn fashion and textures.",
+      description: "An editorial exploring autumn fashion and rich textures.",
       client: "Style Magazine",
       year: 2023
     },

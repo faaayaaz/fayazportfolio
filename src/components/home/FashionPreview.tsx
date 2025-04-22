@@ -22,6 +22,21 @@ export default function FashionPreview() {
       title: "Spring Editorial",
       image: "/lovable-uploads/357ea9c5-6a81-4980-afb3-0dda40df4919.png",
       description: "Fresh and vibrant spring styles in an artistic setting.",
+    },
+    {
+      title: "Summer Vibes",
+      image: "/lovable-uploads/7e04893a-ef02-44c6-96ad-5e68880373bb.png",
+      description: "Capturing the essence of summer fashion and lifestyle.",
+    },
+    {
+      title: "Artistic Series",
+      image: "/lovable-uploads/ae139fdd-c90a-4407-b79f-1f8ebad5dc67.png",
+      description: "An artistic interpretation of contemporary fashion.",
+    },
+    {
+      title: "Spring Dreams",
+      image: "/lovable-uploads/dd473452-7149-47a4-856e-075831b4b5a1.png",
+      description: "A dreamy spring campaign featuring light fabrics and natural settings.",
     }
   ];
 
