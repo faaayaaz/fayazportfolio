@@ -115,6 +115,43 @@ const Fashion = () => {
       client: "Minimalist Fashion Co.",
       photographer: "Emma White",
       year: 2023
+    },
+    {
+      id: 10,
+      title: "Profile Photo 1",
+      category: "Editorial",
+      image: "/lovable-uploads/c2bb14be-8935-4258-a0cf-e45281db002f.png",
+      description: "Studio portrait/professional profile photo.",
+      client: "N/A",
+      year: 2023,
+    },
+    {
+      id: 11,
+      title: "Profile Photo 2",
+      category: "Editorial",
+      image: "/lovable-uploads/ec60566c-f4b9-4a91-ad34-b3a8294c1ef6.png",
+      description: "Professional fashion headshot.",
+      client: "N/A",
+      year: 2023,
+    },
+    {
+      id: 12,
+      title: "Profile Photo 3",
+      category: "Editorial",
+      image: "/lovable-uploads/ec44a1a0-5b5b-4869-8f36-4b0c37e340f2.png",
+      description: "Outdoor profile portrait.",
+      client: "N/A",
+      year: 2023,
+    },
+    {
+      id: 13,
+      title: "Accessories Edit",
+      category: "Commercial",
+      image: "/lovable-uploads/effb464c-46e9-4f0e-9149-8adb1d3b1d22.png",
+      description: "Showcasing premium accessories and jewelry pieces.",
+      client: "Luxe Accessories",
+      photographer: "David Lee",
+      year: 2023
     }
   ];
 
