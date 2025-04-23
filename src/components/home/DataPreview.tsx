@@ -1,29 +1,17 @@
 
-import { useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 export default function DataPreview() {
-  const chartRef = useRef<HTMLDivElement>(null);
-
-  const dataProjects = [
-    {
-      title: "E-commerce Customer Analysis",
-      technologies: "Python, Pandas, SQL",
-      description: "Analyzed customer behavior to optimize user journey and increase conversions by 24%."
-    },
-    {
-      title: "Fashion Inventory Prediction",
-      technologies: "R, Time Series Analysis",
-      description: "Built a prediction model for fashion inventory management with 92% accuracy."
-    },
-    {
-      title: "Market Research Dashboard",
-      technologies: "Tableau, SQL, Python",
-      description: "Created an interactive dashboard to visualize market research data for a major fashion brand."
-    }
-  ];
+  // Highlight one main project or summary with a punchy headline
+  const keyProject = {
+    title: "E-commerce Customer Analysis",
+    metric: "24% increase in conversions",
+    highlight: "Drove real business impact with data insights.",
+    technologies: "Python, Pandas, SQL",
+    url: "/data",
+  };
 
   return (
     <section className="section-padding bg-data-lightblue/10">
@@ -34,95 +22,23 @@ export default function DataPreview() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
         >
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-serif mb-3">Data Analysis Projects</h2>
-            <p className="text-gray-700 max-w-2xl mx-auto">
-              Leveraging data science and analytical skills to extract insights and
-              solve complex business problems.
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-serif mb-3">Data Analytics That Drive Results</h2>
+            <p className="text-data-navy font-semibold text-lg mb-4">
+              Turning complex datasets into clear, actionable strategies.
             </p>
           </div>
-          {/* REMOVED PROJECT BAR CHART PER REQUEST */}
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-12">
-            <div className="space-y-6">
-              <h3 className="text-xl font-serif mb-2">My Analytical Approach</h3>
-              <p className="text-gray-700">
-                I combine statistical methods with modern data science techniques to 
-                derive actionable insights from complex datasets.
-              </p>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm font-medium">Python & Data Science</span>
-                    <span className="text-sm font-medium">95%</span>
-                  </div>
-                  <div className="skill-bar">
-                    <motion.div 
-                      className="skill-progress bg-data-blue"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "95%" }}
-                      transition={{ duration: 1, delay: 0.2 }}
-                      viewport={{ once: true }}
-                    ></motion.div>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm font-medium">SQL & Database</span>
-                    <span className="text-sm font-medium">90%</span>
-                  </div>
-                  <div className="skill-bar">
-                    <motion.div 
-                      className="skill-progress bg-data-teal"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "90%" }}
-                      transition={{ duration: 1, delay: 0.3 }}
-                      viewport={{ once: true }}
-                    ></motion.div>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm font-medium">Data Visualization</span>
-                    <span className="text-sm font-medium">85%</span>
-                  </div>
-                  <div className="skill-bar">
-                    <motion.div 
-                      className="skill-progress bg-data-navy"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "85%" }}
-                      transition={{ duration: 1, delay: 0.4 }}
-                      viewport={{ once: true }}
-                    ></motion.div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div>
-              {/* Could feature profile or other image/summary here in future */}
+          <div className="flex flex-col md:flex-row gap-8 items-center justify-center mb-10">
+            <div className="bg-white rounded-xl shadow-lg p-8 flex-1 max-w-xl border border-data-lightblue/30">
+              <h3 className="text-xl font-serif mb-3">{keyProject.title}</h3>
+              <div className="text-sm text-data-blue mb-2">{keyProject.technologies}</div>
+              <p className="text-gray-700 font-medium mb-3">{keyProject.highlight}</p>
+              <div className="text-lg font-bold text-data-navy mb-2">{keyProject.metric}</div>
             </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {dataProjects.map((project, index) => (
-              <motion.div
-                key={index}
-                className="data-card p-6"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <h3 className="text-xl font-serif mb-2">{project.title}</h3>
-                <div className="text-sm text-data-blue mb-3">{project.technologies}</div>
-                <p className="text-gray-600">{project.description}</p>
-              </motion.div>
-            ))}
-          </div>
-          
-          <div className="mt-10 text-center">
-            <Button asChild size="lg" className="bg-data-navy hover:bg-data-navy/90">
-              <Link to="/data">Explore Data Projects</Link>
+          <div className="mt-4 text-center">
+            <Button asChild size="lg" className="bg-data-navy hover:bg-data-navy/90 px-8 py-6 text-lg">
+              <Link to="/data">See More Data Projects</Link>
             </Button>
           </div>
         </motion.div>
