@@ -14,7 +14,7 @@ export default function DataPreview() {
   };
 
   return (
-    <section className="section-padding bg-gradient-to-tr from-data-lightblue/20 to-white/90">
+    <section className="section-padding bg-gradient-to-tr from-data-lightblue/20 to-white/90 dark:from-data-navy/20 dark:to-slate-900/90">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -23,10 +23,10 @@ export default function DataPreview() {
           viewport={{ once: true }}
         >
           <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-2 text-data-navy">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-2 text-data-navy dark:text-data-lightblue">
               Real Results. Real Impact.
             </h2>
-            <p className="text-lg md:text-xl font-medium text-data-blue/90 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl font-medium text-data-blue/90 dark:text-data-lightblue/90 max-w-2xl mx-auto">
               Transforming complex data into sharp, actionable strategies.
             </p>
           </div>
@@ -36,7 +36,7 @@ export default function DataPreview() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 170, damping: 15 }}
-              className="relative bg-white rounded-xl border-2 border-data-lightblue/60 shadow-lg overflow-hidden w-full max-w-md flex flex-col items-center"
+              className="relative bg-white dark:bg-slate-800 rounded-xl border-2 border-data-lightblue/60 dark:border-data-blue/40 shadow-lg overflow-hidden w-full max-w-md flex flex-col items-center"
             >
               {/* Animated accent bar */}
               <motion.div 
@@ -57,7 +57,7 @@ export default function DataPreview() {
                 </div>
                 
                 <motion.div
-                  className="text-3xl md:text-4xl font-bold text-data-teal mb-3"
+                  className="text-3xl md:text-4xl font-bold text-data-teal mb-3 dark:text-data-teal/90"
                   initial={{ scale: 1 }}
                   animate={{ scale: [1, 1.05, 1], color: ["#2A9D8F", "#3E78B2", "#2A9D8F"] }}
                   transition={{ duration: 4, repeat: Infinity }}
@@ -65,12 +65,12 @@ export default function DataPreview() {
                   {keyProject.metric}
                 </motion.div>
                 
-                <div className="text-[1.12rem] mb-2 font-semibold text-data-navy">{keyProject.title}</div>
-                <p className="text-gray-700 text-base mb-4 text-center">{keyProject.highlight}</p>
+                <div className="text-[1.12rem] mb-2 font-semibold text-data-navy dark:text-data-lightblue">{keyProject.title}</div>
+                <p className="text-gray-700 dark:text-gray-300 text-base mb-4 text-center">{keyProject.highlight}</p>
                 
                 <div className="flex flex-wrap justify-center gap-2 mb-2">
                   {keyProject.tech.split('·').map((tech, i) => (
-                    <span key={i} className="px-3 py-1 text-sm rounded-full bg-data-lightblue/20 border border-data-lightblue/30 text-data-navy/90">
+                    <span key={i} className="px-3 py-1 text-sm rounded-full bg-data-lightblue/20 border border-data-lightblue/30 text-data-navy/90 dark:bg-data-blue/20 dark:border-data-blue/40 dark:text-data-lightblue/90">
                       {tech.trim()}
                     </span>
                   ))}
@@ -82,7 +82,7 @@ export default function DataPreview() {
             <Button 
               asChild 
               size="lg" 
-              className="bg-data-navy hover:bg-data-navy/90 px-8 py-5 text-lg transition-all duration-200 shadow-md hover:shadow-lg"
+              className="bg-data-navy hover:bg-data-navy/90 dark:bg-data-blue dark:hover:bg-data-blue/90 px-8 py-5 text-lg transition-all duration-200 shadow-md hover:shadow-lg"
             >
               <Link to={keyProject.url}>
                 <span className="mr-1">See All Data Projects</span>

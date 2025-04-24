@@ -134,14 +134,6 @@ export default {
                 serif: ['Playfair Display', 'serif'],
                 mono: ['Space Mono', 'monospace'],
             },
-            backgroundColor: {
-                'background': 'hsl(var(--background))',
-                'foreground': 'hsl(var(--foreground))',
-            },
-            textColor: {
-                'background': 'hsl(var(--background))',
-                'foreground': 'hsl(var(--foreground))',
-            },
 		},
 	},
 	plugins: [require("tailwindcss-animate")],
