@@ -130,6 +130,9 @@ export default function Data() {
   const [methodsInput, setMethodsInput] = useState(skills.methods.join("\n"));
   const [toolsInput, setToolsInput] = useState(skills.tools.join("\n"));
   const [profileImage, setProfileImage] = useState(profile.img);
+  const [projectImage, setProjectImage] = useState("");
+  const [showProjectImageModal, setShowProjectImageModal] = useState(false);
+  const [editingProject, setEditingProject] = useState<any>(null);
 
   const { toast } = useToast();
 
@@ -158,6 +161,33 @@ export default function Data() {
       project.id === updatedProject.id ? updatedProject : project
     );
     console.log("Project updated:", updatedProject);
+    
+    if (updatedProject.requestImageEdit) {
+      setEditingProject(updatedProject);
+      setProjectImage(updatedProject.image || "");
+      setShowProjectImageModal(true);
+      return;
+    }
+  };
+
+  const handleSaveProjectImage = () => {
+    if (!editingProject) return;
+    
+    const updatedProject = { ...editingProject, image: projectImage };
+    delete updatedProject.requestImageEdit;
+    
+    const updatedProjects = dataProjects.map(project => 
+      project.id === updatedProject.id ? updatedProject : project
+    );
+    
+    console.log("Project image updated:", updatedProject);
+    setShowProjectImageModal(false);
+    setEditingProject(null);
+    
+    toast({
+      title: "Project image updated",
+      description: "The project image has been updated successfully."
+    });
   };
 
   const handleProfileEdit = (e: React.FormEvent) => {
@@ -227,13 +257,13 @@ export default function Data() {
         </section>
 
         <section className="section-padding bg-card backdrop-blur-sm border-y border-border">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 justify-between items-start">
-            <div className="flex items-start gap-6 w-full md:w-auto">
+          <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 justify-between items-start px-4">
+            <div className="flex flex-col sm:flex-row items-start gap-6 w-full md:w-auto">
               <div className="relative">
                 <img
                   src={profile.img}
                   alt="Profile"
-                  className="rounded-full w-32 h-32 object-cover border-4 border-primary/20 shadow-xl"
+                  className="rounded-full w-24 sm:w-32 h-24 sm:h-32 object-cover border-4 border-primary/20 shadow-xl"
                 />
                 {isAdmin && (
                   <Button
@@ -264,7 +294,7 @@ export default function Data() {
         </section>
 
         <section className="section-padding bg-accent/10">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto px-4">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -307,7 +337,13 @@ export default function Data() {
               <label className="block mb-1 font-medium">Role</label>
               <Input name="role" defaultValue={profile.role} className="w-full" />
             </div>
-            <ImageUpload value={profileImage} onChange={setProfileImage} label="Profile Image"/>
+            <ImageUpload 
+              value={profileImage} 
+              onChange={setProfileImage} 
+              label="Profile Image"
+              allowedTypes={["image/jpeg", "image/png", "image/webp"]}
+              maxSizeMB={2}
+            />
             <div>
               <label className="block mb-1 font-medium">About You</label>
               <Textarea name="about" defaultValue={profile.about} rows={3} className="w-full" />
@@ -365,6 +401,34 @@ export default function Data() {
               <Button type="submit">Save Changes</Button>
             </div>
           </form>
+        </DialogContent>
+      </Dialog>
+      
+      <Dialog open={showProjectImageModal} onOpenChange={setShowProjectImageModal}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Project Image</DialogTitle>
+            <DialogDescription>
+              Upload or update the image for this project.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-6">
+            <ImageUpload 
+              value={projectImage} 
+              onChange={setProjectImage} 
+              label="Project Image"
+              maxSizeMB={3}
+              allowedTypes={["image/jpeg", "image/png", "image/webp", "image/gif"]}
+            />
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => setShowProjectImageModal(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleSaveProjectImage}>
+                Save Image
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
       

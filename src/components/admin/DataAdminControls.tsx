@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Edit, Link } from "lucide-react";
+import { Edit, Link, Image } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -54,16 +54,38 @@ export const DataAdminControls = ({ project, onUpdate }: {
     });
   };
 
+  const handleImageEdit = () => {
+    if (onUpdate) {
+      onUpdate({
+        ...project,
+        requestImageEdit: true,
+      });
+    }
+    setShowEditDialog(false);
+  };
+
   return (
     <>
-      <Button 
-        variant="outline" 
-        onClick={() => setShowEditDialog(true)}
-        className="absolute top-4 right-4 z-10"
-      >
-        <Edit className="h-4 w-4 mr-2" />
-        Edit
-      </Button>
+      <div className="absolute top-4 right-4 z-10 flex gap-2">
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={handleImageEdit}
+          className="bg-background/80 hover:bg-background border-border shadow-sm"
+        >
+          <Image className="h-4 w-4 mr-1" />
+          Image
+        </Button>
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={() => setShowEditDialog(true)}
+          className="bg-background/80 hover:bg-background border-border shadow-sm"
+        >
+          <Edit className="h-4 w-4 mr-1" />
+          Edit
+        </Button>
+      </div>
 
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
         <DialogContent>
@@ -138,7 +160,13 @@ export const DataAdminControls = ({ project, onUpdate }: {
                 )}
               />
               
-              <Button type="submit">Save Changes</Button>
+              <div className="flex justify-between pt-2">
+                <Button type="button" variant="outline" onClick={handleImageEdit}>
+                  <Image className="h-4 w-4 mr-2" />
+                  Edit Image
+                </Button>
+                <Button type="submit">Save Changes</Button>
+              </div>
             </form>
           </Form>
         </DialogContent>
