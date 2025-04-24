@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { Link2 } from "lucide-react";
+import { Link2, Image as ImageIcon } from "lucide-react";
 import { DataAdminControls } from "../admin/DataAdminControls";
 
 interface ProjectCardProps {
@@ -19,12 +19,23 @@ export const ProjectCard = ({ project, isAdmin, onUpdate, index }: ProjectCardPr
       viewport={{ once: true }}
       className="group relative bg-card hover:bg-accent/5 border border-border rounded-xl shadow-md transition-all duration-300 overflow-visible hover:-translate-y-1"
     >
+      {project.image_url && (
+        <div className="relative w-full h-48 overflow-hidden rounded-t-xl">
+          <img
+            src={project.image_url}
+            alt={project.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
+      
       {isAdmin && (
         <DataAdminControls 
           project={project}
           onUpdate={onUpdate}
         />
       )}
+
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-serif text-foreground group-hover:text-primary transition-colors">

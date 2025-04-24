@@ -2,17 +2,14 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Edit, Link, Image } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { ImageUpload } from "@/components/common/ImageUpload";
+import { supabase } from "@/integrations/supabase/client";
 
 interface EditProjectForm {
   title: string;
@@ -20,6 +17,7 @@ interface EditProjectForm {
   tools: string;
   projectUrl: string;
   urlMask: string;
+  image_url?: string;
 }
 
 export const DataAdminControls = ({ project, onUpdate }: { 
@@ -27,6 +25,8 @@ export const DataAdminControls = ({ project, onUpdate }: {
   onUpdate?: (data: any) => void;
 }) => {
   const [showEditDialog, setShowEditDialog] = useState(false);
+  const [showImageDialog, setShowImageDialog] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
   
   const form = useForm<EditProjectForm>({
@@ -35,7 +35,8 @@ export const DataAdminControls = ({ project, onUpdate }: {
       description: project?.description || '',
       tools: project?.tools || '',
       projectUrl: project?.url || '',
-      urlMask: project?.urlMask || ''
+      urlMask: project?.urlMask || '',
+      image_url: project?.image_url || ''
     }
   });
 
@@ -54,14 +55,46 @@ export const DataAdminControls = ({ project, onUpdate }: {
     });
   };
 
-  const handleImageEdit = () => {
-    if (onUpdate) {
-      onUpdate({
-        ...project,
-        requestImageEdit: true,
+  const handleImageUpload = async (imageUrl: string) => {
+    if (!project || !imageUrl) return;
+
+    setUploading(true);
+    try {
+      // Upload the file to Supabase Storage
+      const fileName = `${project.id}-${Date.now()}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('images')
+        .upload(fileName, await (await fetch(imageUrl)).blob());
+
+      if (uploadError) throw uploadError;
+
+      // Get the public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('images')
+        .getPublicUrl(fileName);
+
+      // Update the project with the new image URL
+      if (onUpdate) {
+        onUpdate({
+          ...project,
+          image_url: publicUrl
+        });
+      }
+
+      setShowImageDialog(false);
+      toast({
+        title: "Image uploaded",
+        description: "Project image has been updated successfully",
       });
+    } catch (error: any) {
+      toast({
+        title: "Upload failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setUploading(false);
     }
-    setShowEditDialog(false);
   };
 
   return (
@@ -70,8 +103,9 @@ export const DataAdminControls = ({ project, onUpdate }: {
         <Button 
           variant="outline" 
           size="sm"
-          onClick={handleImageEdit}
+          onClick={() => setShowImageDialog(true)}
           className="bg-background/80 hover:bg-background border-border shadow-sm"
+          disabled={uploading}
         >
           <Image className="h-4 w-4 mr-1" />
           Image
@@ -169,6 +203,22 @@ export const DataAdminControls = ({ project, onUpdate }: {
               </div>
             </form>
           </Form>
+        </DialogContent>
+      </Dialog>
+      
+      <Dialog open={showImageDialog} onOpenChange={setShowImageDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Project Image</DialogTitle>
+          </DialogHeader>
+          <ImageUpload 
+            value={project?.image_url || ''} 
+            onChange={handleImageUpload}
+            label="Upload Project Image"
+            maxSizeMB={5}
+            allowedTypes={["image/jpeg", "image/png", "image/webp"]}
+            className="w-full"
+          />
         </DialogContent>
       </Dialog>
     </>
