@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Edit, Link, Image } from "lucide-react";
@@ -95,6 +94,16 @@ export const DataAdminControls = ({ project, onUpdate }: {
     } finally {
       setUploading(false);
     }
+  };
+
+  const handleImageEdit = () => {
+    if (onUpdate) {
+      onUpdate({
+        ...project,
+        requestImageEdit: true
+      });
+    }
+    setShowEditDialog(false);
   };
 
   return (
