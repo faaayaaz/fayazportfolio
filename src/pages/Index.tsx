@@ -146,9 +146,9 @@ export default function Index() {
       
       <Hero />
       <AboutPreview />
+      <DataPreview />
       <TopFashion />
       <FashionPreview />
-      <DataPreview />
 
       {/* Contact CTA */}
       <section className="section-padding bg-gradient-to-r from-fashion-beige to-data-lightblue/30">
