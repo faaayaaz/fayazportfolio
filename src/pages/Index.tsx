@@ -5,7 +5,6 @@ import Hero from "@/components/home/Hero";
 import AboutPreview from "@/components/home/About";
 import FashionPreview from "@/components/home/FashionPreview";
 import DataPreview from "@/components/home/DataPreview";
-import TopFashion from "@/components/home/TopFashion";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -24,10 +23,8 @@ export default function Index() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Only show the modal if user hasn't chosen before in this tab
     const hasSeenModal = sessionStorage.getItem("seenEntryModal");
     if (!hasSeenModal) {
-      // Slight delay to improve user experience - gives page time to load
       const timer = setTimeout(() => {
         setShowModal(true);
         setModalOpened(true);
@@ -39,7 +36,6 @@ export default function Index() {
   const handleChoice = (route: string) => {
     setSelectedOption(route === "/fashion" ? "fashion" : "data");
     
-    // Small delay before navigating to show the selection effect
     setTimeout(() => {
       sessionStorage.setItem("seenEntryModal", "true");
       setShowModal(false);
@@ -50,6 +46,7 @@ export default function Index() {
   return (
     <div className="min-h-screen">
       <Navbar />
+      
       <AnimatePresence>
         {showModal && (
           <Dialog 
@@ -147,10 +144,8 @@ export default function Index() {
       <Hero />
       <AboutPreview />
       <DataPreview />
-      <TopFashion />
       <FashionPreview />
 
-      {/* Contact CTA */}
       <section className="section-padding bg-gradient-to-r from-fashion-beige to-data-lightblue/30">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
