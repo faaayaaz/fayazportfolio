@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -6,6 +5,7 @@ import Hero from "@/components/home/Hero";
 import AboutPreview from "@/components/home/About";
 import FashionPreview from "@/components/home/FashionPreview";
 import DataPreview from "@/components/home/DataPreview";
+import TopFashion from "@/components/home/TopFashion";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -146,6 +146,7 @@ export default function Index() {
       
       <Hero />
       <AboutPreview />
+      <TopFashion />
       <FashionPreview />
       <DataPreview />
 
