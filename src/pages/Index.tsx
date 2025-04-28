@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -44,7 +45,7 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-fashion-cream/10">
       <Navbar />
       
       <AnimatePresence>
@@ -58,84 +59,92 @@ export default function Index() {
               }
             }}
           >
-            <DialogContent className="max-w-md sm:max-w-lg px-6 py-10 sm:px-10 md:px-12 sm:py-12 rounded-xl border-2">
-              <DialogHeader>
-                <DialogTitle className="text-2xl sm:text-3xl text-center font-serif mb-2">
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-fashion-charcoal to-data-navy">
-                    What would you like to explore first?
-                  </span>
-                </DialogTitle>
-                <DialogDescription className="text-center mb-8 text-base">
-                  Choose your journey — Fashion Portfolio or Data Analytics Projects.
-                </DialogDescription>
-              </DialogHeader>
-              
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }} 
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="flex flex-col gap-6"
-              >
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Button
-                    className={`w-full bg-gradient-to-r from-fashion-beige to-fashion-taupe text-fashion-charcoal hover:text-fashion-charcoal/90 font-serif text-lg py-6 shadow-md rounded-lg border border-fashion-beige/50 transition-all duration-300 ${
-                      selectedOption === "fashion" ? "ring-2 ring-fashion-charcoal" : ""
-                    }`}
-                    size="lg"
-                    onClick={() => handleChoice("/fashion")}
-                  >
-                    <span className="relative">
-                      Fashion Projects
-                      {selectedOption === "fashion" && (
-                        <motion.span
-                          initial={{ width: 0 }}
-                          animate={{ width: "100%" }}
-                          className="absolute -bottom-1 left-0 h-0.5 bg-fashion-charcoal"
-                        />
-                      )}
-                    </span>
-                  </Button>
-                </motion.div>
-
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Button
-                    className={`w-full bg-gradient-to-r from-data-lightblue/30 to-data-blue/20 text-data-navy hover:text-data-navy/90 border border-data-lightblue/50 font-serif text-lg py-6 shadow-md hover:shadow-lg rounded-lg transition-all duration-300 ${
-                      selectedOption === "data" ? "ring-2 ring-data-navy" : ""
-                    }`}
-                    variant="outline"
-                    size="lg"
-                    onClick={() => handleChoice("/data")}
-                  >
-                    <span className="relative">
-                      Data Analytics Projects
-                      {selectedOption === "data" && (
-                        <motion.span
-                          initial={{ width: 0 }}
-                          animate={{ width: "100%" }}
-                          className="absolute -bottom-1 left-0 h-0.5 bg-data-navy"
-                        />
-                      )}
-                    </span>
-                  </Button>
-                </motion.div>
-              </motion.div>
-              
-              {modalOpened && (
+            <DialogContent className="max-w-md sm:max-w-lg p-0 rounded-2xl border-2 overflow-hidden bg-gradient-to-br from-background to-fashion-cream/30 backdrop-blur-sm">
+              <div className="p-6 sm:p-10">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl sm:text-3xl text-center font-serif mb-2">
+                    <motion.span
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-fashion-charcoal via-data-navy to-data-teal"
+                    >
+                      Choose Your Journey
+                    </motion.span>
+                  </DialogTitle>
+                  <DialogDescription className="text-center mb-8 text-base">
+                    Step into a world where creativity meets analytics.
+                  </DialogDescription>
+                </DialogHeader>
+                
                 <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1 }}
-                  className="text-center mt-6 text-sm text-muted-foreground"
+                  initial={{ opacity: 0, y: 10 }} 
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="flex flex-col gap-6"
                 >
-                  <p>Don't worry, you can explore both sections anytime from the navigation menu.</p>
+                  <motion.div
+                    whileHover={{ scale: 1.02, translateY: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="relative group"
+                  >
+                    <Button
+                      className={`w-full bg-gradient-to-r from-fashion-beige to-fashion-taupe text-fashion-charcoal hover:text-fashion-charcoal/90 font-serif text-lg py-6 shadow-lg hover:shadow-xl rounded-lg border border-fashion-beige/50 transition-all duration-300 ${
+                        selectedOption === "fashion" ? "ring-2 ring-fashion-charcoal" : ""
+                      }`}
+                      size="lg"
+                      onClick={() => handleChoice("/fashion")}
+                    >
+                      <span className="relative z-10">
+                        Fashion Portfolio
+                        {selectedOption === "fashion" && (
+                          <motion.span
+                            initial={{ width: 0 }}
+                            animate={{ width: "100%" }}
+                            className="absolute -bottom-1 left-0 h-0.5 bg-fashion-charcoal"
+                          />
+                        )}
+                      </span>
+                    </Button>
+                  </motion.div>
+
+                  <motion.div
+                    whileHover={{ scale: 1.02, translateY: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="relative group"
+                  >
+                    <Button
+                      className={`w-full bg-gradient-to-r from-data-lightblue/30 to-data-blue/20 text-data-navy hover:text-data-navy/90 border border-data-lightblue/50 font-serif text-lg py-6 shadow-lg hover:shadow-xl rounded-lg transition-all duration-300 ${
+                        selectedOption === "data" ? "ring-2 ring-data-navy" : ""
+                      }`}
+                      variant="outline"
+                      size="lg"
+                      onClick={() => handleChoice("/data")}
+                    >
+                      <span className="relative z-10">
+                        Data Analytics
+                        {selectedOption === "data" && (
+                          <motion.span
+                            initial={{ width: 0 }}
+                            animate={{ width: "100%" }}
+                            className="absolute -bottom-1 left-0 h-0.5 bg-data-navy"
+                          />
+                        )}
+                      </span>
+                    </Button>
+                  </motion.div>
                 </motion.div>
-              )}
+                
+                {modalOpened && (
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1 }}
+                    className="text-center mt-6 text-sm text-muted-foreground"
+                  >
+                    <p>Both worlds are always accessible through the navigation menu.</p>
+                  </motion.div>
+                )}
+              </div>
             </DialogContent>
           </Dialog>
         )}
@@ -146,7 +155,7 @@ export default function Index() {
       <DataPreview />
       <FashionPreview />
 
-      <section className="section-padding bg-gradient-to-r from-fashion-beige to-data-lightblue/30">
+      <section className="section-padding bg-gradient-to-r from-fashion-beige via-background to-data-lightblue/30">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -154,13 +163,16 @@ export default function Index() {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto text-center px-4"
         >
-          <h2 className="text-3xl font-serif mb-6">Let's Work Together</h2>
-          <p className="text-gray-700 mb-8 max-w-2xl mx-auto">
-            Interested in collaborating on fashion projects or data analysis? 
-            Get in touch to discuss how we can bring your vision to life.
+          <h2 className="text-3xl sm:text-4xl font-serif mb-6">Let's Create Something Amazing</h2>
+          <p className="text-gray-700 mb-8 max-w-2xl mx-auto text-lg">
+            Whether it's fashion projects or data analysis, I'm ready to bring your vision to life with creativity and precision.
           </p>
-          <Button asChild size="lg" className="shadow-md hover:shadow-lg transition-all duration-300">
-            <Link to="/contact">Contact Me</Link>
+          <Button 
+            asChild 
+            size="lg" 
+            className="bg-gradient-to-r from-fashion-charcoal to-data-navy hover:opacity-90 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            <Link to="/contact">Start a Conversation</Link>
           </Button>
         </motion.div>
       </section>
