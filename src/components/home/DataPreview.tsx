@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BarChart, PieChart } from "lucide-react";
+import { BarChart, PieChart, LineChart, ArrowRight } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 
 export default function DataPreview() {
@@ -13,7 +13,9 @@ export default function DataPreview() {
       highlight: "Leveraging data to boost online sales performance.",
       tech: "Python · Pandas · SQL · Tableau",
       description: "Built a comprehensive analytics dashboard that helped increase e-commerce revenue by identifying key customer behavior patterns and optimizing product recommendations.",
-      url: "/data"
+      url: "/data",
+      color: "from-data-lightblue/20 to-data-teal/20",
+      icon: <BarChart className="h-6 w-6 text-data-teal opacity-80" />
     },
     {
       title: "Predictive Inventory System",
@@ -21,12 +23,14 @@ export default function DataPreview() {
       highlight: "AI-powered inventory management.",
       tech: "Python · TensorFlow · scikit-learn",
       description: "Developed a machine learning model that predicts optimal inventory levels, reducing waste by 30% while maintaining stock availability.",
-      url: "/data"
+      url: "/data",
+      color: "from-data-blue/20 to-data-navy/20",
+      icon: <LineChart className="h-6 w-6 text-data-blue opacity-80" />
     }
   ];
 
   return (
-    <section className="section-padding bg-gradient-to-tr from-data-lightblue/20 to-white/90 dark:from-data-navy/20 dark:to-slate-900/90">
+    <section className="section-padding bg-gradient-to-tr from-data-lightblue/20 via-data-teal/5 to-white/90 dark:from-data-navy/30 dark:via-data-blue/10 dark:to-slate-900/90">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -34,16 +38,33 @@ export default function DataPreview() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           viewport={{ once: true }}
         >
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4 text-data-navy dark:text-data-lightblue">
+          <div className="text-center mb-12 relative">
+            <motion.div 
+              className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-data-teal via-data-blue to-data-navy opacity-70"
+              initial={{ width: 0 }}
+              whileInView={{ width: "5rem" }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              viewport={{ once: true }}
+            />
+            
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-data-navy via-data-blue to-data-teal">
               Data-Driven Solutions
             </h2>
+            
             <p className="text-lg md:text-xl font-medium text-data-blue/90 dark:text-data-lightblue/90 max-w-2xl mx-auto">
               Transforming complex data into actionable insights
             </p>
+
+            <motion.div 
+              className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-data-navy via-data-blue to-data-teal opacity-70"
+              initial={{ width: 0 }}
+              whileInView={{ width: "4rem" }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              viewport={{ once: true }}
+            />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 px-4 mb-12">
+          <div className="grid md:grid-cols-2 gap-8 px-4 mb-16">
             {featuredProjects.map((project, index) => (
               <motion.div
                 key={index}
@@ -51,44 +72,60 @@ export default function DataPreview() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
                 viewport={{ once: true }}
+                className="group"
               >
-                <Card className="h-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-2 border-data-lightblue/20 dark:border-data-blue/20 hover:border-data-lightblue/40 dark:hover:border-data-blue/40 transition-all duration-300">
+                <Card className="h-full bg-gradient-to-br #{project.color} backdrop-blur-sm border-2 border-data-lightblue/20 dark:border-data-blue/20 hover:border-data-teal/40 dark:hover:border-data-teal/40 transition-all duration-300">
                   <CardHeader>
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-3">
                         <motion.div 
                           animate={{ rotate: [0, 10, 0] }} 
                           transition={{ duration: 5, repeat: Infinity }}
+                          className="p-2 bg-white/80 dark:bg-slate-800/80 rounded-lg shadow-sm"
                         >
-                          <PieChart className="h-6 w-6 text-data-teal opacity-80" />
+                          {project.icon}
                         </motion.div>
                         <motion.div 
                           animate={{ rotate: [0, -5, 0] }} 
                           transition={{ duration: 6, delay: 0.5, repeat: Infinity }}
+                          className="p-2 bg-white/80 dark:bg-slate-800/80 rounded-lg shadow-sm"
                         >
-                          <BarChart className="h-6 w-6 text-data-blue opacity-80" />
+                          <PieChart className="h-6 w-6 text-data-blue opacity-80" />
                         </motion.div>
                       </div>
-                      <span className="text-2xl font-bold text-data-teal">{project.metric}</span>
+                      <span className="text-2xl font-bold text-data-teal bg-white/60 dark:bg-slate-800/60 px-3 py-1 rounded-md">{project.metric}</span>
                     </div>
-                    <CardTitle className="text-xl font-bold text-data-navy dark:text-data-lightblue mb-2">
+                    <CardTitle className="text-xl font-bold text-data-navy dark:text-data-lightblue mb-2 group-hover:text-data-teal transition-colors duration-300">
                       {project.title}
                     </CardTitle>
-                    <CardDescription className="text-base text-gray-600 dark:text-gray-300">
+                    <CardDescription className="text-base text-gray-600 dark:text-gray-300 line-clamp-3">
                       {project.description}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="flex flex-wrap gap-2 mb-6">
                       {project.tech.split('·').map((tech, i) => (
                         <span 
                           key={i}
-                          className="px-3 py-1 text-sm rounded-full bg-data-lightblue/20 border border-data-lightblue/30 text-data-navy/90 dark:bg-data-blue/20 dark:border-data-blue/40 dark:text-data-lightblue/90"
+                          className="px-3 py-1 text-sm rounded-full bg-white/70 dark:bg-slate-800/70 border border-data-lightblue/30 text-data-navy/90 dark:border-data-blue/40 dark:text-data-lightblue/90"
                         >
                           {tech.trim()}
                         </span>
                       ))}
                     </div>
+                    
+                    <motion.div 
+                      whileHover={{ x: 5 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Link 
+                        to={project.url} 
+                        className="inline-flex items-center gap-2 text-data-blue hover:text-data-teal dark:text-data-lightblue dark:hover:text-data-teal transition-colors duration-200"
+                      >
+                        <span>Explore this project</span>
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </motion.div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -96,16 +133,26 @@ export default function DataPreview() {
           </div>
 
           <div className="text-center">
-            <Button 
-              asChild 
-              size="lg" 
-              className="bg-data-navy hover:bg-data-navy/90 dark:bg-data-blue dark:hover:bg-data-blue/90 px-8 py-6 text-lg transition-all duration-200 shadow-md hover:shadow-lg"
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <Link to="/data">
-                <span className="mr-1">Explore All Data Projects</span>
-                <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
-              </Link>
-            </Button>
+              <Button 
+                asChild 
+                size="lg" 
+                className="bg-gradient-to-r from-data-navy to-data-blue hover:from-data-blue hover:to-data-teal dark:from-data-blue dark:to-data-teal dark:hover:from-data-teal dark:hover:to-data-blue px-8 py-6 text-lg transition-all duration-300 shadow-md hover:shadow-lg"
+              >
+                <Link to="/data" className="flex items-center gap-2">
+                  <span>Explore All Data Projects</span>
+                  <motion.div
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    <ArrowRight className="h-5 w-5" />
+                  </motion.div>
+                </Link>
+              </Button>
+            </motion.div>
           </div>
         </motion.div>
       </div>

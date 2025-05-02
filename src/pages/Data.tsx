@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -48,7 +49,7 @@ export default function Data() {
       description: "Analyzed customer behavior data to optimize user journey and increase conversions by 24%. Used Python and Pandas to clean and process over 1 million transaction records, identifying key patterns in customer behavior.",
       tools: "Python, Pandas, SQL, Matplotlib",
       year: "2023",
-      image: "/placeholder.svg",
+      image_url: "/lovable-uploads/7e04893a-ef02-44c6-96ad-5e68880373bb.png",
       url: "https://example.com/ecommerce-analysis",
       urlMask: "View Analysis"
     },
@@ -59,7 +60,7 @@ export default function Data() {
       description: "Built a prediction model for fashion inventory management with 92% accuracy. Used time series analysis to forecast demand for different product categories based on historical sales data, seasonal trends, and external factors.",
       tools: "R, Time Series Analysis, Python, scikit-learn",
       year: "2022",
-      image: "/placeholder.svg",
+      image_url: "/lovable-uploads/26d9f84d-93af-4f3f-935d-21c6ebdf937f.png",
       url: "https://example.com/inventory-prediction",
       urlMask: "View Model"
     },
@@ -70,7 +71,7 @@ export default function Data() {
       description: "Created an interactive dashboard to visualize market research data for a major fashion brand. The dashboard helped executives track market trends, competitor analysis, and consumer preferences in real-time.",
       tools: "Tableau, SQL, Python, D3.js",
       year: "2023",
-      image: "/placeholder.svg",
+      image_url: "/lovable-uploads/ae139fdd-c90a-4407-b79f-1f8ebad5dc67.png",
       url: "https://example.com/market-dashboard",
       urlMask: "View Dashboard"
     },
@@ -81,7 +82,7 @@ export default function Data() {
       description: "Performed sentiment analysis on social media data to gauge public perception of fashion brands. Used natural language processing techniques to analyze thousands of comments and posts, providing actionable insights to marketing teams.",
       tools: "Python, NLTK, spaCy, TensorFlow",
       year: "2021",
-      image: "/placeholder.svg",
+      image_url: "/lovable-uploads/ec44a1a0-5b5b-4869-8f36-4b0c37e340f2.png",
       url: "https://example.com/sentiment-analysis",
       urlMask: "View Analysis"
     },
@@ -92,7 +93,7 @@ export default function Data() {
       description: "Analyzed performance metrics across 50+ retail locations to identify key factors affecting sales. Created a scoring model that helped optimize store layouts and product placement, resulting in a 15% increase in revenue.",
       tools: "Python, SQL, Power BI, Excel",
       year: "2022",
-      image: "/placeholder.svg",
+      image_url: "/lovable-uploads/ec60566c-f4b9-4a91-ad34-b3a8294c1ef6.png",
       url: "https://example.com/retail-performance",
       urlMask: "View Report"
     }
@@ -225,16 +226,38 @@ export default function Data() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-data-lightblue/5">
       <Navbar />
       
       <main className="pt-24">
         <section className="relative h-[50vh] mb-16">
-          <div className="absolute inset-0 bg-gradient-to-br from-data-navy/10 via-data-lightblue/20 to-background overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-data-navy/20 via-data-lightblue/30 to-background overflow-hidden">
             <div className="absolute inset-0 bg-grid-pattern opacity-30"></div>
+            
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              transition={{ duration: 1.5 }}
+              className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-data-teal/30 filter blur-3xl"
+            />
+            
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.4 }}
+              transition={{ duration: 1.5, delay: 0.3 }}
+              className="absolute -bottom-32 -left-20 w-80 h-80 rounded-full bg-data-blue/20 filter blur-3xl"
+            />
           </div>
+          
           <div className="relative h-full flex items-center justify-center px-4">
             <div className="text-center max-w-4xl mx-auto">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: "6rem" }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                className="h-1 bg-gradient-to-r from-data-teal to-data-blue mx-auto mb-10"
+              />
+              
               <motion.h1
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -243,6 +266,7 @@ export default function Data() {
               >
                 Data Analysis Projects
               </motion.h1>
+              
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -252,18 +276,25 @@ export default function Data() {
                 Exploring complex datasets to extract meaningful insights
                 using Python, SQL, R, and visualization tools.
               </motion.p>
+              
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: "4rem" }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                className="h-1 bg-gradient-to-r from-data-blue to-data-teal mx-auto mt-10"
+              />
             </div>
           </div>
         </section>
 
-        <section className="section-padding bg-card backdrop-blur-sm border-y border-border">
+        <section className="section-padding bg-card backdrop-blur-sm border-y border-data-lightblue/30">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 justify-between items-start px-4">
             <div className="flex flex-col sm:flex-row items-start gap-6 w-full md:w-auto">
               <div className="relative">
                 <img
                   src={profile.img}
                   alt="Profile"
-                  className="rounded-full w-24 sm:w-32 h-24 sm:h-32 object-cover border-4 border-primary/20 shadow-xl"
+                  className="rounded-full w-24 sm:w-32 h-24 sm:h-32 object-cover border-4 border-data-teal/20 shadow-xl"
                 />
                 {isAdmin && (
                   <Button
@@ -277,8 +308,8 @@ export default function Data() {
                 )}
               </div>
               <div>
-                <h2 className="text-2xl font-serif font-bold text-foreground">{profile.name}</h2>
-                <p className="mb-2 text-lg text-primary">{profile.role}</p>
+                <h2 className="text-2xl font-serif font-bold text-data-navy dark:text-data-lightblue">{profile.name}</h2>
+                <p className="mb-2 text-lg text-data-teal">{profile.role}</p>
                 <p className="text-muted-foreground max-w-md">{profile.about}</p>
               </div>
             </div>
@@ -293,19 +324,37 @@ export default function Data() {
           />
         </section>
 
-        <section className="section-padding bg-accent/10">
+        <section className="section-padding bg-gradient-to-r from-data-lightblue/5 via-transparent to-data-lightblue/5 dark:from-data-navy/10 dark:via-transparent dark:to-data-navy/10">
           <div className="max-w-6xl mx-auto px-4">
+            <motion.div
+              initial={{ width: 0 }}
+              whileInView={{ width: "5rem" }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="h-1 bg-gradient-to-r from-data-teal to-data-blue mx-auto mb-8"
+            />
+            
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              className="text-3xl font-serif mb-12 text-center text-foreground"
+              className="text-3xl font-serif mb-4 text-center text-data-navy dark:text-data-lightblue"
             >
               Featured Data Projects
             </motion.h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="text-center text-muted-foreground max-w-2xl mx-auto mb-12"
+            >
+              A collection of data analytics, visualization, and machine learning projects that demonstrate a range of technical capabilities
+            </motion.p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
               {dataProjects.map((project, index) => (
                 <ProjectCard
                   key={project.id}
