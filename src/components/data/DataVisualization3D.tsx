@@ -91,7 +91,7 @@ interface LineSegmentProps {
 
 // Fixed component that properly creates a Three.js line
 const LineSegment = ({ start, end, color }: LineSegmentProps) => {
-  const ref = useRef<THREE.Line>(null);
+  const ref = useRef<any>(null);
   
   // Create points for the line
   const points = [
