@@ -2,8 +2,71 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BarChart, PieChart, LineChart, ArrowRight } from "lucide-react";
+import { BarChart, PieChart, LineChart, ArrowRight, Cuboid } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { useRef } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Float, Text } from "@react-three/drei";
+
+// 3D Data Cube Component
+const DataCube = ({ position = [0, 0, 0], color = "#3E78B2", size = 1.5 }) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    if (!meshRef.current) return;
+    meshRef.current.rotation.x += 0.003;
+    meshRef.current.rotation.y += 0.005;
+  });
+  
+  return (
+    <mesh position={position as any} ref={meshRef}>
+      <boxGeometry args={[size, size, size]} />
+      <meshStandardMaterial 
+        color={color} 
+        transparent 
+        opacity={0.8} 
+        roughness={0.3}
+        metalness={0.5}
+      />
+    </mesh>
+  );
+};
+
+// 3D Floating Chart Component
+const FloatingChart = () => {
+  return (
+    <>
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[10, 10, 5]} intensity={1.5} />
+      
+      <Float speed={1.5} rotationIntensity={0.6} floatIntensity={0.6}>
+        <DataCube position={[-2, -0.5, 0]} color="#2A9D8F" size={1.2} />
+        <DataCube position={[1.5, 0.5, -1]} color="#3E78B2" size={0.9} />
+        <DataCube position={[0, 1, 1]} color="#1A2B49" size={1.5} />
+        
+        <Text
+          position={[0, -2, 0]}
+          color="#2A9D8F"
+          fontSize={0.5}
+          font="/Playfair_Display/PlayfairDisplay-Bold.ttf"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Data Analytics
+        </Text>
+      </Float>
+      
+      <OrbitControls 
+        enableZoom={false} 
+        enablePan={false}
+        autoRotate
+        autoRotateSpeed={0.7}
+        maxPolarAngle={Math.PI / 2}
+        minPolarAngle={Math.PI / 3}
+      />
+    </>
+  );
+};
 
 export default function DataPreview() {
   const featuredProjects = [
@@ -63,6 +126,26 @@ export default function DataPreview() {
               viewport={{ once: true }}
             />
           </div>
+          
+          {/* 3D Data Visualization */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="max-w-3xl h-[300px] mx-auto mb-16 rounded-xl overflow-hidden shadow-xl border border-data-lightblue/30 dark:border-data-blue/30"
+          >
+            <Canvas>
+              <FloatingChart />
+            </Canvas>
+            <div className="absolute inset-0 bg-gradient-to-t from-data-navy/10 to-transparent pointer-events-none" />
+            <div className="absolute top-4 left-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm px-4 py-2 rounded-lg text-data-navy dark:text-data-lightblue text-sm">
+              <div className="flex items-center gap-2">
+                <Cuboid className="h-5 w-5" />
+                <span>Interactive 3D Data Visualization</span>
+              </div>
+            </div>
+          </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8 px-4 mb-16">
             {featuredProjects.map((project, index) => (

@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { ProjectCard } from "@/components/data/ProjectCard";
 import { SkillsSection } from "@/components/data/SkillsSection";
 import { ImageUpload } from "@/components/common/ImageUpload";
+import DataVisualization3D from "@/components/data/DataVisualization3D";
 
 export default function Data() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -284,6 +285,34 @@ export default function Data() {
                 className="h-1 bg-gradient-to-r from-data-blue to-data-teal mx-auto mt-10"
               />
             </div>
+          </div>
+        </section>
+
+        {/* 3D Data Visualization Section */}
+        <section className="section-padding">
+          <div className="max-w-6xl mx-auto px-4">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-3xl font-serif mb-6 text-center text-data-navy dark:text-data-lightblue"
+            >
+              Interactive Data Visualization
+            </motion.h2>
+            
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="text-center text-muted-foreground max-w-2xl mx-auto mb-8"
+            >
+              Explore the relationships between data points in this interactive 3D visualization.
+              Drag to rotate, scroll to zoom, and discover meaningful patterns.
+            </motion.p>
+            
+            <DataVisualization3D />
           </div>
         </section>
 
