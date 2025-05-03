@@ -1,7 +1,7 @@
 
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Float, useTexture } from '@react-three/drei';
+import { OrbitControls, Float } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import * as THREE from 'three';
 
@@ -77,32 +77,42 @@ const Lines = ({ points }: { points: DataPoint[] }) => {
   return (
     <>
       {dataConnections.map(([start, end], i) => (
-        <ConnectionLine key={i} start={start.position} end={end.position} color={start.color} />
+        <LineSegment key={i} start={start.position} end={end.position} color={start.color} />
       ))}
     </>
   );
 };
 
-interface ConnectionLineProps {
+interface LineSegmentProps {
   start: [number, number, number];
   end: [number, number, number];
   color: string;
 }
 
-const ConnectionLine = ({ start, end, color }: ConnectionLineProps) => {
+// Fixed component that properly creates a Three.js line
+const LineSegment = ({ start, end, color }: LineSegmentProps) => {
+  const ref = useRef<THREE.Line>(null);
+  
   // Create points for the line
-  const linePoints = [
-    new THREE.Vector3(...start),
-    new THREE.Vector3(...end)
+  const points = [
+    new THREE.Vector3(start[0], start[1], start[2]),
+    new THREE.Vector3(end[0], end[1], end[2])
   ];
   
-  // Create the geometry
-  const lineGeometry = new THREE.BufferGeometry().setFromPoints(linePoints);
-  
   return (
-    <line geometry={lineGeometry}>
-      <lineBasicMaterial attach="material" color={color} transparent opacity={0.4} />
-    </line>
+    <group>
+      <line ref={ref}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={points.length}
+            array={new Float32Array(points.flatMap(p => [p.x, p.y, p.z]))}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <lineBasicMaterial attach="material" color={color} transparent opacity={0.4} />
+      </line>
+    </group>
   );
 };
 
