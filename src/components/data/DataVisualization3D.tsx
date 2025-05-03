@@ -1,147 +1,122 @@
 
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Float } from '@react-three/drei';
+import { OrbitControls, Text, Float, Sphere } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import * as THREE from 'three';
 
-interface DataPoint {
-  position: [number, number, number];
-  size: number;
-  color: string;
-}
-
-// Generate some sample data points for visualization
-const generateDataPoints = (count: number): DataPoint[] => {
-  return Array.from({ length: count }, (_, i) => ({
-    position: [
-      (Math.random() - 0.5) * 10,
-      (Math.random() - 0.5) * 10,
-      (Math.random() - 0.5) * 10
-    ],
-    size: Math.random() * 0.5 + 0.2,
-    color: [
-      '#2A9D8F',
-      '#3E78B2', 
-      '#1A2B49',
-      '#435B66',
-      '#CBE2F5'
-    ][Math.floor(Math.random() * 5)]
-  }));
-};
-
-const DataPoints = ({ points }: { points: DataPoint[] }) => {
-  return (
-    <>
-      {points.map((point, i) => (
-        <DataSphere key={i} point={point} />
-      ))}
-    </>
-  );
-};
-
-const DataSphere = ({ point }: { point: DataPoint }) => {
-  const sphereRef = useRef<THREE.Mesh>(null);
+const DataPoint = ({ position, size, color }: { position: [number, number, number], size: number, color: string }) => {
+  const ref = useRef<THREE.Mesh>(null);
   
   useFrame(() => {
-    if (!sphereRef.current) return;
-    // Add subtle movement to each sphere
-    sphereRef.current.rotation.x += 0.002;
-    sphereRef.current.rotation.y += 0.003;
+    if (ref.current) {
+      ref.current.rotation.x += 0.002;
+      ref.current.rotation.y += 0.003;
+    }
   });
   
   return (
-    <mesh 
-      position={point.position} 
-      ref={sphereRef}
-    >
-      <sphereGeometry args={[point.size, 16, 16]} />
+    <Sphere args={[size, 16, 16]} position={position}>
       <meshStandardMaterial 
-        color={point.color}
-        roughness={0.5}
-        metalness={0.2}
-        transparent
-        opacity={0.8}
+        color={color} 
+        roughness={0.5} 
+        metalness={0.2} 
+        transparent 
+        opacity={0.8} 
       />
-    </mesh>
+    </Sphere>
   );
 };
 
-// Completely rewritten Lines component to avoid the error
-const Lines = ({ points }: { points: DataPoint[] }) => {
-  // Create fewer lines to reduce complexity
-  const connections = React.useMemo(() => {
-    return Array.from({ length: points.length / 4 }, () => {
-      const startIdx = Math.floor(Math.random() * points.length);
-      const endIdx = Math.floor(Math.random() * points.length);
-      return {
-        start: points[startIdx].position,
-        end: points[endIdx].position,
-        color: points[startIdx].color
-      };
-    });
-  }, [points]);
+const DataGrid = () => {
+  // Create a grid of data points for a more organized visualization
+  const colors = ['#2A9D8F', '#3E78B2', '#1A2B49', '#435B66', '#CBE2F5'];
+  const gridSize = 3;
+  const points = [];
 
+  // Generate a structured grid of points
+  for (let x = -gridSize; x <= gridSize; x++) {
+    for (let y = -gridSize; y <= gridSize; y++) {
+      for (let z = -gridSize; z <= gridSize; z++) {
+        // Only create points at certain intervals to avoid overcrowding
+        if (Math.abs(x) % 2 === 0 && Math.abs(y) % 2 === 0 && Math.abs(z) % 2 === 0) {
+          points.push({
+            position: [x * 2, y * 2, z * 2] as [number, number, number],
+            size: 0.4 + Math.random() * 0.3,
+            color: colors[Math.floor(Math.random() * colors.length)]
+          });
+        }
+      }
+    }
+  }
+  
   return (
-    <>
-      {connections.map((connection, i) => (
-        <SimpleLine 
-          key={i}
-          start={connection.start} 
-          end={connection.end} 
-          color={connection.color} 
+    <group>
+      {points.map((point, i) => (
+        <DataPoint 
+          key={i} 
+          position={point.position} 
+          size={point.size} 
+          color={point.color} 
         />
       ))}
-    </>
+    </group>
   );
 };
 
-// Fixed line implementation using THREE.Line primitive
-const SimpleLine = ({ 
-  start, 
-  end, 
-  color 
-}: { 
-  start: [number, number, number]; 
-  end: [number, number, number]; 
-  color: string; 
-}) => {
-  // Create points for the line
-  const points = React.useMemo(() => {
-    // Create an array of Vector3 points
-    const pointsArray = [
-      new THREE.Vector3(...start),
-      new THREE.Vector3(...end)
-    ];
-    
-    // Create a BufferGeometry from the points
-    const geometry = new THREE.BufferGeometry().setFromPoints(pointsArray);
-    return geometry;
-  }, [start, end]);
-
+const DataLabels = () => {
   return (
-    <primitive object={new THREE.Line(
-      points,
-      new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.4 })
-    )} />
+    <>
+      <Text
+        position={[0, -7, 0]}
+        color="#2A9D8F"
+        fontSize={0.8}
+        anchorX="center"
+        anchorY="middle"
+      >
+        Data Analytics
+      </Text>
+      
+      <Text
+        position={[7, 0, 0]}
+        rotation={[0, -Math.PI / 2, 0]}
+        color="#3E78B2"
+        fontSize={0.7}
+        anchorX="center"
+        anchorY="middle"
+      >
+        Machine Learning
+      </Text>
+      
+      <Text
+        position={[0, 0, 7]}
+        rotation={[0, Math.PI, 0]}
+        color="#1A2B49"
+        fontSize={0.7}
+        anchorX="center"
+        anchorY="middle"
+      >
+        Visualization
+      </Text>
+    </>
   );
 };
 
 const Scene = () => {
-  const dataPoints = generateDataPoints(40);
-  
   return (
     <>
       <ambientLight intensity={0.5} />
       <directionalLight position={[10, 10, 10]} intensity={1} />
+      
       <Float
         speed={2} 
         rotationIntensity={0.5} 
         floatingRange={[-0.2, 0.2]}
       >
-        <DataPoints points={dataPoints} />
-        <Lines points={dataPoints} />
+        <DataGrid />
+        <DataLabels />
       </Float>
+      
       <OrbitControls 
         enableZoom={true} 
         enablePan={true} 
@@ -162,13 +137,13 @@ export default function DataVisualization3D() {
       className="w-full h-[50vh] md:h-[60vh] lg:h-[70vh] bg-gradient-to-br from-data-navy/10 to-data-lightblue/10 rounded-xl overflow-hidden border border-data-lightblue/30 dark:border-data-blue/30"
     >
       <Canvas
-        camera={{ position: [0, 0, 15], fov: 60 }}
+        camera={{ position: [15, 10, 15], fov: 50 }}
         style={{ background: 'transparent' }}
       >
         <Scene />
       </Canvas>
       <div className="absolute top-4 left-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md px-4 py-2 rounded-lg shadow-md text-data-navy dark:text-data-lightblue text-sm pointer-events-none">
-        <p>Interactive 3D Data Visualization</p>
+        <p>3D Data Visualization Grid</p>
         <p className="text-xs text-muted-foreground">Drag to rotate • Scroll to zoom</p>
       </div>
     </motion.div>
