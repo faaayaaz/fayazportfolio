@@ -1,22 +1,24 @@
 
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Text, Float, Sphere } from '@react-three/drei';
+import { OrbitControls, Text, Float } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import * as THREE from 'three';
 
+// A simpler and more reliable approach for data points
 const DataPoint = ({ position, size, color }: { position: [number, number, number], size: number, color: string }) => {
-  const ref = useRef<THREE.Mesh>(null);
+  const meshRef = useRef<THREE.Mesh>(null);
   
   useFrame(() => {
-    if (ref.current) {
-      ref.current.rotation.x += 0.002;
-      ref.current.rotation.y += 0.003;
+    if (meshRef.current) {
+      meshRef.current.rotation.x += 0.002;
+      meshRef.current.rotation.y += 0.003;
     }
   });
   
   return (
-    <Sphere args={[size, 16, 16]} position={position}>
+    <mesh ref={meshRef} position={position}>
+      <sphereGeometry args={[size, 16, 16]} />
       <meshStandardMaterial 
         color={color} 
         roughness={0.5} 
@@ -24,7 +26,7 @@ const DataPoint = ({ position, size, color }: { position: [number, number, numbe
         transparent 
         opacity={0.8} 
       />
-    </Sphere>
+    </mesh>
   );
 };
 
