@@ -85,19 +85,18 @@ const Lines = ({ points }: { points: DataPoint[] }) => {
   return (
     <>
       {connections.map((connection, i) => (
-        <React.Fragment key={i}>
-          <SimpleLine 
-            start={connection.start} 
-            end={connection.end} 
-            color={connection.color} 
-          />
-        </React.Fragment>
+        <SimpleLine 
+          key={i}
+          start={connection.start} 
+          end={connection.end} 
+          color={connection.color} 
+        />
       ))}
     </>
   );
 };
 
-// A simpler line implementation using primitive objects
+// Fixed line implementation using THREE.Line primitive
 const SimpleLine = ({ 
   start, 
   end, 
@@ -107,25 +106,24 @@ const SimpleLine = ({
   end: [number, number, number]; 
   color: string; 
 }) => {
-  // Create a geometry that represents a line between two points
-  const lineGeometry = React.useMemo(() => {
-    const geometry = new THREE.BufferGeometry();
-    const vertices = new Float32Array([
-      ...start,
-      ...end
-    ]);
+  // Create points for the line
+  const points = React.useMemo(() => {
+    // Create an array of Vector3 points
+    const pointsArray = [
+      new THREE.Vector3(...start),
+      new THREE.Vector3(...end)
+    ];
     
-    geometry.setAttribute(
-      'position',
-      new THREE.BufferAttribute(vertices, 3)
-    );
+    // Create a BufferGeometry from the points
+    const geometry = new THREE.BufferGeometry().setFromPoints(pointsArray);
     return geometry;
   }, [start, end]);
 
   return (
-    <line geometry={lineGeometry}>
-      <lineBasicMaterial attach="material" color={color} opacity={0.4} transparent />
-    </line>
+    <primitive object={new THREE.Line(
+      points,
+      new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.4 })
+    )} />
   );
 };
 
