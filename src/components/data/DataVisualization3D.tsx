@@ -43,7 +43,7 @@ const DataPoints = ({ points }: { points: DataPoint[] }) => {
 const DataSphere = ({ point }: { point: DataPoint }) => {
   const sphereRef = useRef<THREE.Mesh>(null);
   
-  useFrame((state) => {
+  useFrame(() => {
     if (!sphereRef.current) return;
     // Add subtle movement to each sphere
     sphereRef.current.rotation.x += 0.002;
@@ -67,52 +67,65 @@ const DataSphere = ({ point }: { point: DataPoint }) => {
   );
 };
 
+// Completely rewritten Lines component to avoid the error
 const Lines = ({ points }: { points: DataPoint[] }) => {
-  const dataConnections = Array.from({ length: points.length / 3 }, (_, i) => {
-    const startIdx = Math.floor(Math.random() * points.length);
-    const endIdx = Math.floor(Math.random() * points.length);
-    return [points[startIdx], points[endIdx]];
-  });
+  // Create fewer lines to reduce complexity
+  const connections = React.useMemo(() => {
+    return Array.from({ length: points.length / 4 }, () => {
+      const startIdx = Math.floor(Math.random() * points.length);
+      const endIdx = Math.floor(Math.random() * points.length);
+      return {
+        start: points[startIdx].position,
+        end: points[endIdx].position,
+        color: points[startIdx].color
+      };
+    });
+  }, [points]);
 
   return (
     <>
-      {dataConnections.map(([start, end], i) => (
-        <LineSegment key={i} start={start.position} end={end.position} color={start.color} />
+      {connections.map((connection, i) => (
+        <React.Fragment key={i}>
+          <SimpleLine 
+            start={connection.start} 
+            end={connection.end} 
+            color={connection.color} 
+          />
+        </React.Fragment>
       ))}
     </>
   );
 };
 
-interface LineSegmentProps {
-  start: [number, number, number];
-  end: [number, number, number];
-  color: string;
-}
+// A simpler line implementation using primitive objects
+const SimpleLine = ({ 
+  start, 
+  end, 
+  color 
+}: { 
+  start: [number, number, number]; 
+  end: [number, number, number]; 
+  color: string; 
+}) => {
+  // Create a geometry that represents a line between two points
+  const lineGeometry = React.useMemo(() => {
+    const geometry = new THREE.BufferGeometry();
+    const vertices = new Float32Array([
+      ...start,
+      ...end
+    ]);
+    
+    geometry.setAttribute(
+      'position',
+      new THREE.BufferAttribute(vertices, 3)
+    );
+    return geometry;
+  }, [start, end]);
 
-// Fixed component that properly creates a Three.js line
-const LineSegment = ({ start, end, color }: LineSegmentProps) => {
-  const ref = useRef<any>(null);
-  
-  // Create points for the line
-  const points = [
-    new THREE.Vector3(start[0], start[1], start[2]),
-    new THREE.Vector3(end[0], end[1], end[2])
-  ];
-  
   return (
-    <group>
-      <line ref={ref}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            count={points.length}
-            array={new Float32Array(points.flatMap(p => [p.x, p.y, p.z]))}
-            itemSize={3}
-          />
-        </bufferGeometry>
-        <lineBasicMaterial attach="material" color={color} transparent opacity={0.4} />
-      </line>
-    </group>
+    <line geometry={lineGeometry}>
+      <lineBasicMaterial attach="material" color={color} opacity={0.4} transparent />
+    </line>
   );
 };
 
