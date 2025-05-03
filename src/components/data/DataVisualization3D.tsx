@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Float, useTexture } from '@react-three/drei';
 import { motion } from 'framer-motion';
+import * as THREE from 'three';
 
 interface DataPoint {
   position: [number, number, number];
@@ -56,7 +57,7 @@ const DataSphere = ({ point }: { point: DataPoint }) => {
     >
       <sphereGeometry args={[point.size, 16, 16]} />
       <meshStandardMaterial 
-        color={point.color} 
+        color={point.color}
         roughness={0.5}
         metalness={0.2}
         transparent
@@ -82,27 +83,25 @@ const Lines = ({ points }: { points: DataPoint[] }) => {
   );
 };
 
-const ConnectionLine = ({ 
-  start, 
-  end, 
-  color 
-}: { 
-  start: [number, number, number]; 
-  end: [number, number, number]; 
+interface ConnectionLineProps {
+  start: [number, number, number];
+  end: [number, number, number];
   color: string;
-}) => {
+}
+
+const ConnectionLine = ({ start, end, color }: ConnectionLineProps) => {
   // Create points for the line
-  const points = [
+  const linePoints = [
     new THREE.Vector3(...start),
     new THREE.Vector3(...end)
   ];
   
   // Create the geometry
-  const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+  const lineGeometry = new THREE.BufferGeometry().setFromPoints(linePoints);
   
   return (
     <line geometry={lineGeometry}>
-      <lineBasicMaterial attach="material" color={color} linewidth={1} transparent opacity={0.4} />
+      <lineBasicMaterial attach="material" color={color} transparent opacity={0.4} />
     </line>
   );
 };

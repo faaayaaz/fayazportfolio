@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -7,6 +6,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Float, Text } from "@react-three/drei";
+import * as THREE from 'three';
 
 // 3D Data Cube Component
 const DataCube = ({ position = [0, 0, 0], color = "#3E78B2", size = 1.5 }) => {
@@ -157,7 +157,7 @@ export default function DataPreview() {
                 viewport={{ once: true }}
                 className="group"
               >
-                <Card className="h-full bg-gradient-to-br #{project.color} backdrop-blur-sm border-2 border-data-lightblue/20 dark:border-data-blue/20 hover:border-data-teal/40 dark:hover:border-data-teal/40 transition-all duration-300">
+                <Card className={`h-full bg-gradient-to-br ${project.color} backdrop-blur-sm border-2 border-data-lightblue/20 dark:border-data-blue/20 hover:border-data-teal/40 dark:hover:border-data-teal/40 transition-all duration-300`}>
                   <CardHeader>
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-3">
