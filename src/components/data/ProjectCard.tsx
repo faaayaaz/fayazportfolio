@@ -21,7 +21,7 @@ export const ProjectCard = ({ project, isAdmin, onUpdate, index }: ProjectCardPr
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true }}
-      className="group relative bg-gradient-to-br from-white via-white to-data-lightblue/5 dark:from-slate-800/90 dark:via-slate-800/80 dark:to-data-navy/20 border border-data-lightblue/30 dark:border-data-blue/30 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-visible hover:-translate-y-1"
+      className="group relative bg-gradient-to-br from-white via-white to-primary/5 dark:from-slate-800/90 dark:via-slate-800/80 dark:to-primary/20 border border-border rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-visible hover:-translate-y-1"
     >
       {project.image_url ? (
         <div className="relative w-full h-52 overflow-hidden rounded-t-xl">
@@ -33,8 +33,8 @@ export const ProjectCard = ({ project, isAdmin, onUpdate, index }: ProjectCardPr
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
       ) : (
-        <div className="relative w-full h-36 bg-data-lightblue/20 dark:bg-data-navy/30 rounded-t-xl flex items-center justify-center">
-          <ImageIcon className="h-12 w-12 text-data-blue/30 dark:text-data-lightblue/30" />
+        <div className="relative w-full h-36 bg-accent/20 rounded-t-xl flex items-center justify-center">
+          <ImageIcon className="h-12 w-12 text-muted-foreground/50" />
         </div>
       )}
       
@@ -47,10 +47,10 @@ export const ProjectCard = ({ project, isAdmin, onUpdate, index }: ProjectCardPr
 
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-serif text-data-navy dark:text-data-lightblue group-hover:text-primary transition-colors">
+          <h3 className="text-xl font-serif text-foreground group-hover:text-primary transition-colors">
             {project.title}
           </h3>
-          <span className="text-xs uppercase tracking-wider bg-data-lightblue/30 dark:bg-data-blue/30 text-data-navy dark:text-data-lightblue px-3 py-1.5 rounded-full">
+          <span className="text-xs uppercase tracking-wider bg-accent/40 px-3 py-1.5 rounded-full text-foreground/80">
             {project.category}
           </span>
         </div>
@@ -64,7 +64,7 @@ export const ProjectCard = ({ project, isAdmin, onUpdate, index }: ProjectCardPr
               variant="ghost" 
               size="sm" 
               onClick={() => setExpanded(!expanded)}
-              className="text-data-blue dark:text-data-lightblue hover:text-data-teal dark:hover:text-data-teal flex items-center gap-1 p-0 h-auto mt-1"
+              className="text-primary hover:text-primary/80 flex items-center gap-1 p-0 h-auto mt-1"
             >
               {expanded ? (
                 <>
@@ -83,7 +83,7 @@ export const ProjectCard = ({ project, isAdmin, onUpdate, index }: ProjectCardPr
           {project.tools.split(',').map((tool: string, i: number) => (
             <span 
               key={i}
-              className="px-2.5 py-1 text-xs rounded-full bg-data-teal/10 border border-data-teal/30 text-data-navy/90 dark:bg-data-teal/20 dark:border-data-teal/40 dark:text-data-lightblue/90"
+              className="px-2.5 py-1 text-xs rounded-full bg-primary/10 border border-primary/30 text-foreground/90"
             >
               {tool.trim()}
             </span>
@@ -92,14 +92,14 @@ export const ProjectCard = ({ project, isAdmin, onUpdate, index }: ProjectCardPr
         
         <div className="flex flex-wrap items-center justify-between mt-6 gap-4">
           <div className="text-sm text-muted-foreground">
-            <span className="font-medium text-data-navy/80 dark:text-data-lightblue/80">Year:</span> {project.year}
+            <span className="font-medium text-foreground/80">Year:</span> {project.year}
           </div>
           {project.url && (
             <a
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-sm text-data-blue hover:text-data-teal transition-colors"
+              className="flex items-center gap-1.5 text-sm text-primary hover:text-primary/80 transition-colors"
             >
               <Link2 className="h-4 w-4" />
               {project.urlMask || 'View Project'}
