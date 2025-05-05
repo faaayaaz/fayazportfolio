@@ -41,17 +41,17 @@ export const SkillsSection = ({ skills, isAdmin, onEdit }: SkillsProps) => {
         <SkillCard
           title="Programming Languages"
           items={skills.languages}
-          gradient="from-data-navy/5 to-data-blue/10"
+          gradient="from-primary/5 to-primary/10"
         />
         <SkillCard
           title="Analysis Methods"
           items={skills.methods}
-          gradient="from-data-blue/5 to-data-teal/10"
+          gradient="from-primary/5 to-primary/10"
         />
         <SkillCard
           title="Visualization Tools"
           items={skills.tools}
-          gradient="from-data-teal/5 to-data-lightblue/10"
+          gradient="from-primary/5 to-primary/10"
         />
       </div>
     </div>
