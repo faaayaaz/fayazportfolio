@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -355,13 +356,13 @@ export default function Data() {
             </div>
             
             {viewMode === 'carousel' ? (
-              <div className="px-8 max-w-4xl mx-auto">
+              <div className="px-4 md:px-12 max-w-4xl mx-auto">
                 <Carousel className="w-full">
                   <CarouselContent>
                     {dataProjects.map((project, index) => (
                       <CarouselItem key={project.id}>
                         <div className="p-1">
-                          <Card>
+                          <Card className="border border-primary/10">
                             <ProjectCard
                               project={project}
                               isAdmin={isAdmin}
@@ -373,11 +374,16 @@ export default function Data() {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <div className="flex items-center justify-center mt-8">
-                    <CarouselPrevious className="relative -left-0 mr-4" />
-                    <CarouselNext className="relative -right-0" />
+                  <div className="relative h-0">
+                    <CarouselPrevious />
+                    <CarouselNext />
                   </div>
                 </Carousel>
+                <div className="flex items-center justify-center gap-2 mt-6">
+                  <div className="text-sm text-muted-foreground">
+                    Use the arrows to navigate through projects
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

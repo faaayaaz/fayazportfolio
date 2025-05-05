@@ -57,7 +57,7 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 25 38% 48%;
+    --primary: 25 60% 55%;  /* Increased saturation and lightness for dark mode */
     --primary-foreground: 222.2 47.4% 11.2%;
 
     --secondary: 217.2 32.6% 17.5%;
@@ -186,6 +186,13 @@
   .theme-button.active {
     @apply ring-2 ring-primary scale-110;
   }
+  
+  /* New carousel navigation styles */
+  .carousel-nav-button {
+    @apply w-10 h-10 md:w-12 md:h-12 rounded-full shadow-md flex justify-center items-center 
+    bg-background/80 backdrop-blur-sm border-2 border-primary/30 hover:bg-background hover:border-primary
+    text-foreground transition-all duration-200;
+  }
 }
 
 /* Custom Scrollbar */
@@ -205,53 +212,4 @@
   @apply bg-primary/80;
 }
 
-/* Image Gallery */
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  grid-gap: 20px;
-}
-
-.gallery-item {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.gallery-item img {
-  transition: transform 0.5s ease;
-}
-
-.gallery-item:hover img {
-  transform: scale(1.05);
-}
-
-.gallery-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
-  padding: 20px;
-  transform: translateY(100%);
-  transition: transform 0.3s ease;
-}
-
-.gallery-item:hover .gallery-overlay {
-  transform: translateY(0);
-}
-
-/* Charts and Data Visualizations */
-.chart-container {
-  @apply p-4 bg-white rounded-lg shadow-md border border-gray-200;
-  min-height: 300px;
-}
-
-/* Progress bars for skills */
-.skill-bar {
-  @apply h-2 rounded-full bg-gray-200 overflow-hidden;
-}
-
-.skill-progress {
-  @apply h-full transition-all duration-1000 ease-out;
-}
+/* ... keep existing code */
