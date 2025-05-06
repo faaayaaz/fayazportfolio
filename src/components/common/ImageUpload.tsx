@@ -1,7 +1,9 @@
+
 import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Upload, Trash2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ImageUploadProps {
   value: string | undefined;
@@ -10,6 +12,7 @@ interface ImageUploadProps {
   label?: string;
   allowedTypes?: string[];
   maxSizeMB?: number;
+  className?: string;
 }
 
 export const ImageUpload: React.FC<ImageUploadProps> = ({
@@ -19,6 +22,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   label = "Image",
   allowedTypes = ["image/jpeg", "image/png", "image/webp"],
   maxSizeMB = 2,
+  className,
 }) => {
   const [isOver, setIsOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -73,7 +77,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   };
   
   return (
-    <div className="space-y-2">
+    <div className={cn("space-y-2", className)}>
       {label && <label className="block font-medium mb-2">{label}</label>}
       
       {value ? (
@@ -139,6 +143,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
               onChange={handleFileChange}
               accept={allowedTypes.join(",")}
               disabled={disabled}
+              ref={fileInputRef}
             />
           </div>
           {error && <p className="text-destructive text-sm mt-1.5">{error}</p>}
