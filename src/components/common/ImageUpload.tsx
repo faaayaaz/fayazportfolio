@@ -2,7 +2,7 @@
 import React, { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Trash2, Upload, Image } from "lucide-react";
+import { Trash2, Upload, Image, Crop } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 type ImageUploadProps = {
@@ -116,6 +116,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
               Supported formats: {allowedTypes.map(t => t.replace('image/', '')).join(', ')}
             </p>
             <p className="text-xs text-muted-foreground">Max size: {maxSizeMB}MB</p>
+            <p className="text-xs text-primary">Recommended ratio: 16:9 (landscape)</p>
           </div>
           <Input
             type="file"
