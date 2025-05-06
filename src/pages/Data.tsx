@@ -86,7 +86,7 @@ export default function Data() {
       description: "A comprehensive churn analysis visualization that transforms raw customer data into actionable intelligence. This interactive dashboard identifies critical risk factors across contract types, payment methods, and demographics, empowering businesses to implement targeted retention strategies and maximize customer lifetime value.",
       tools: "Power BI, Power Query, Excel",
       year: "2024",
-      image_url: "/lovable-uploads/ec44a1a0-5b5b-4869-8f36-4b0c37e340f2.png",
+      image_url: "/lovable-uploads/4bdd5663-8cc1-4492-bc0b-e137ad9812ad.png",
       url: "https://app.powerbi.com/view?r=eyJrIjoiMzljMGY5NzEtN2RmZS00YjBhLWEyMzgtNGJmNzFlN2NkNjZlIiwidCI6IjhjZWJiMzY0LTIyMTItNGEzOS05ZjE2LWIwYTJmMjk3ZDc0YiIsImMiOjZ9",
       urlMask: "View Report"
     },
