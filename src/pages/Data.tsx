@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -86,7 +85,7 @@ export default function Data() {
       description: "A comprehensive churn analysis visualization that transforms raw customer data into actionable intelligence. This interactive dashboard identifies critical risk factors across contract types, payment methods, and demographics, empowering businesses to implement targeted retention strategies and maximize customer lifetime value.",
       tools: "Power BI, Power Query, Excel",
       year: "2024",
-      image_url: "/lovable-uploads/4bdd5663-8cc1-4492-bc0b-e137ad9812ad.png",
+      image_url: "/lovable-uploads/bc3e42ff-2fe3-4bea-9071-9d7bb938b040.png",
       url: "https://app.powerbi.com/view?r=eyJrIjoiMzljMGY5NzEtN2RmZS00YjBhLWEyMzgtNGJmNzFlN2NkNjZlIiwidCI6IjhjZWJiMzY0LTIyMTItNGEzOS05ZjE2LWIwYTJmMjk3ZDc0YiIsImMiOjZ9",
       urlMask: "View Report"
     },
