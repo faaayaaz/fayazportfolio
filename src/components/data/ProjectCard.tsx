@@ -4,6 +4,7 @@ import { Link2, Image as ImageIcon, ChevronDown, ChevronUp } from "lucide-react"
 import { DataAdminControls } from "../admin/DataAdminControls";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface ProjectCardProps {
   project: any;
@@ -24,12 +25,16 @@ export const ProjectCard = ({ project, isAdmin, onUpdate, index }: ProjectCardPr
       className="group relative bg-gradient-to-br from-white via-white to-primary/5 dark:from-slate-800/90 dark:via-slate-800/80 dark:to-primary/20 border border-border rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-visible hover:-translate-y-1"
     >
       {project.image_url ? (
-        <div className="relative w-full aspect-video overflow-hidden rounded-t-xl">
-          <img
-            src={project.image_url}
-            alt={project.title}
-            className="w-full h-full object-cover object-center"
-          />
+        <div className="relative w-full overflow-hidden rounded-t-xl">
+          <AspectRatio ratio={16 / 9} className="w-full mx-auto">
+            <div className="flex items-center justify-center w-full h-full bg-accent/10">
+              <img
+                src={project.image_url}
+                alt={project.title}
+                className="w-auto h-auto max-w-full max-h-full object-contain"
+              />
+            </div>
+          </AspectRatio>
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
       ) : (
