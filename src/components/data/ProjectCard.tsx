@@ -24,16 +24,16 @@ export const ProjectCard = ({ project, isAdmin, onUpdate, index }: ProjectCardPr
       className="group relative bg-gradient-to-br from-white via-white to-primary/5 dark:from-slate-800/90 dark:via-slate-800/80 dark:to-primary/20 border border-border rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-visible hover:-translate-y-1"
     >
       {project.image_url ? (
-        <div className="relative w-full h-52 overflow-hidden rounded-t-xl">
+        <div className="relative w-full aspect-video overflow-hidden rounded-t-xl">
           <img
             src={project.image_url}
             alt={project.title}
-            className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
+            className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
       ) : (
-        <div className="relative w-full h-36 bg-accent/20 rounded-t-xl flex items-center justify-center">
+        <div className="relative w-full aspect-video bg-accent/20 rounded-t-xl flex items-center justify-center">
           <ImageIcon className="h-12 w-12 text-muted-foreground/50" />
         </div>
       )}

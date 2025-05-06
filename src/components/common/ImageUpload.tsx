@@ -1,169 +1,148 @@
-
-import React, { useRef, useState } from "react";
-import { Input } from "@/components/ui/input";
+import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Trash2, Upload, Image, Crop } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
+import { Upload, Trash2 } from "lucide-react";
 
-type ImageUploadProps = {
-  value: string;
-  onChange: (val: string) => void;
+interface ImageUploadProps {
+  value: string | undefined;
+  onChange: (value: string) => void;
+  disabled?: boolean;
   label?: string;
-  className?: string;
-  maxSizeMB?: number;
   allowedTypes?: string[];
-};
+  maxSizeMB?: number;
+}
 
 export const ImageUpload: React.FC<ImageUploadProps> = ({
   value,
   onChange,
+  disabled,
   label = "Image",
-  className = "",
-  maxSizeMB = 5,
-  allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"]
+  allowedTypes = ["image/jpeg", "image/png", "image/webp"],
+  maxSizeMB = 2,
 }) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [isHovering, setIsHovering] = useState(false);
+  const [isOver, setIsOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files && e.target.files[0];
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsOver(false);
+
+    const file = e.dataTransfer.files[0];
+    handleFile(file);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    handleFile(file);
+  };
+
+  const handleFile = (file: File | undefined) => {
     if (!file) return;
-    
-    // Validate file type
+
     if (!allowedTypes.includes(file.type)) {
-      setError(`Invalid file type. Allowed types: ${allowedTypes.map(t => t.replace('image/', '')).join(', ')}`);
-      toast({
-        title: "Invalid file type",
-        description: `Please upload ${allowedTypes.map(t => t.replace('image/', '')).join(', ')} files only.`,
-        variant: "destructive"
-      });
+      setError(`File type not supported. Allowed types: ${allowedTypes.join(", ")}`);
       return;
     }
-    
-    // Validate file size
-    const fileSizeMB = file.size / (1024 * 1024);
-    if (fileSizeMB > maxSizeMB) {
-      setError(`File size should be less than ${maxSizeMB}MB.`);
-      toast({
-        title: "File too large",
-        description: `The image should be smaller than ${maxSizeMB}MB.`,
-        variant: "destructive"
-      });
+
+    if (file.size > maxSizeMB * 1024 * 1024) {
+      setError(`File size exceeds ${maxSizeMB}MB`);
       return;
     }
-    
-    // Clear previous errors
+
     setError(null);
-    
-    // Create object URL for preview
-    const url = URL.createObjectURL(file);
-    onChange(url);
-    
-    toast({
-      title: "Image uploaded",
-      description: "Your image has been attached successfully."
-    });
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      onChange(reader.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
-  const handleRemoveImage = () => {
+  const handleRemove = () => {
     onChange("");
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
-    toast({
-      title: "Image removed",
-      description: "The image has been removed."
-    });
   };
-
+  
   return (
-    <div className={`space-y-3 ${className}`}>
-      <label className="block text-sm font-medium">{label}</label>
+    <div className="space-y-2">
+      {label && <label className="block font-medium mb-2">{label}</label>}
       
-      {!value ? (
-        <div 
-          className="border-2 border-dashed border-input hover:border-primary/50 rounded-lg p-6 transition-colors cursor-pointer flex flex-col items-center justify-center gap-2"
-          onDragOver={(e) => {
-            e.preventDefault();
-            setIsHovering(true);
-          }}
-          onDragLeave={() => setIsHovering(false)}
-          onDrop={(e) => {
-            e.preventDefault();
-            setIsHovering(false);
-            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-              const file = e.dataTransfer.files[0];
-              const input = inputRef.current;
-              if (input) {
-                const dataTransfer = new DataTransfer();
-                dataTransfer.items.add(file);
-                input.files = dataTransfer.files;
-                input.dispatchEvent(new Event('change', { bubbles: true }));
-              }
-            }
-          }}
-          onClick={() => inputRef.current?.click()}
-          style={{
-            backgroundColor: isHovering ? "rgba(0,0,0,0.03)" : "transparent"
-          }}
-        >
-          <Upload className="h-10 w-10 text-muted-foreground/50" />
-          <div className="text-center space-y-1">
-            <p className="text-sm font-medium">Drop an image here or click to browse</p>
-            <p className="text-xs text-muted-foreground">
-              Supported formats: {allowedTypes.map(t => t.replace('image/', '')).join(', ')}
-            </p>
-            <p className="text-xs text-muted-foreground">Max size: {maxSizeMB}MB</p>
-            <p className="text-xs text-primary">Recommended ratio: 16:9 (landscape)</p>
+      {value ? (
+        <div className="relative">
+          <div className="relative aspect-video border rounded-md overflow-hidden">
+            <img
+              src={value}
+              alt="Selected"
+              className="w-full h-full object-cover object-center"
+            />
           </div>
-          <Input
-            type="file"
-            accept={allowedTypes.join(',')}
-            ref={inputRef}
-            onChange={handleFileChange}
-            className="hidden"
-          />
+          
+          {!disabled && (
+            <div className="absolute top-2 right-2 flex space-x-2">
+              <Button
+                type="button"
+                onClick={handleRemove}
+                variant="destructive"
+                size="icon"
+                className="h-7 w-7 rounded-full opacity-80 hover:opacity-100"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          )}
         </div>
       ) : (
-        <div className="relative group">
-          <img 
-            src={value} 
-            alt="Preview" 
-            className="w-full h-auto object-contain rounded-lg border border-border shadow-sm max-h-64" 
-          />
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="bg-background/80 hover:bg-background"
-              onClick={() => inputRef.current?.click()}
-            >
-              Replace
-            </Button>
-            <Button 
-              variant="destructive" 
-              size="sm" 
-              className="bg-destructive/80 hover:bg-destructive"
-              onClick={handleRemoveImage}
-            >
-              <Trash2 className="h-4 w-4 mr-1" />
-              Remove
-            </Button>
+        <div className="relative">
+          <div
+            className={`border-2 border-dashed rounded-lg p-6 ${
+              isOver ? "border-primary bg-primary/5" : "border-muted-foreground/20"
+            } transition-colors duration-200 flex flex-col items-center justify-center gap-4 min-h-[180px]`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            <div className="rounded-full bg-primary/10 p-3">
+              <Upload className="h-6 w-6 text-primary" />
+            </div>
+            <div className="text-center space-y-1">
+              <p className="text-sm font-medium">
+                Drag & drop or{" "}
+                <label
+                  htmlFor="fileInput"
+                  className="text-primary hover:text-primary/80 cursor-pointer"
+                >
+                  browse
+                </label>
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Supported formats: {allowedTypes.map(t => t.replace('image/', '')).join(', ')}
+              </p>
+              <p className="text-xs text-muted-foreground">Max size: {maxSizeMB}MB</p>
+              <div className="flex items-center justify-center gap-2 mt-2">
+                <div className="bg-primary/20 h-5 w-8 rounded"></div>
+                <span className="text-xs text-primary font-medium">16:9 ratio recommended</span>
+              </div>
+            </div>
+            <Input
+              type="file"
+              id="fileInput"
+              className="hidden"
+              onChange={handleFileChange}
+              accept={allowedTypes.join(",")}
+              disabled={disabled}
+            />
           </div>
-          <Input
-            type="file"
-            accept={allowedTypes.join(',')}
-            ref={inputRef}
-            onChange={handleFileChange}
-            className="hidden"
-          />
+          {error && <p className="text-destructive text-sm mt-1.5">{error}</p>}
         </div>
-      )}
-      
-      {error && (
-        <p className="text-sm text-destructive">{error}</p>
       )}
     </div>
   );
