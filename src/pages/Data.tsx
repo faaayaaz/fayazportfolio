@@ -9,12 +9,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Edit } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { ProjectCard } from "@/components/data/ProjectCard";
 import { SkillsSection } from "@/components/data/SkillsSection";
 import { ImageUpload } from "@/components/common/ImageUpload";
 import DataVisualization3D from "@/components/data/DataVisualization3D";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { Card } from "@/components/ui/card";
+import { ProjectCarousel } from "@/components/data/ProjectCarousel";
+import { ProjectGrid } from "@/components/data/ProjectGrid";
 
 export default function Data() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -355,51 +354,17 @@ export default function Data() {
             </div>
             
             {viewMode === 'carousel' ? (
-              <div className="px-4 md:px-12 max-w-5xl mx-auto">
-                <Carousel className="w-full">
-                  <CarouselContent className="-ml-2 md:-ml-4">
-                    {dataProjects.map((project, index) => (
-                      <CarouselItem key={project.id} className="pl-2 md:pl-4 basis-full md:basis-9/10 lg:basis-4/5">
-                        <div className="p-1">
-                          <Card className="border-primary/10 shadow-lg">
-                            <ProjectCard
-                              project={project}
-                              isAdmin={isAdmin}
-                              onUpdate={handleProjectUpdate}
-                              index={index}
-                            />
-                          </Card>
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <div className="hidden md:block relative h-0">
-                    <CarouselPrevious className="left-0 md:-left-12" />
-                    <CarouselNext className="right-0 md:-right-12" />
-                  </div>
-                </Carousel>
-                <div className="mt-6 flex flex-col items-center justify-center md:hidden">
-                  <div className="flex gap-4 mb-4">
-                    <CarouselPrevious className="position-static transform-none h-10 w-10 rounded-full" />
-                    <CarouselNext className="position-static transform-none h-10 w-10 rounded-full" />
-                  </div>
-                  <div className="text-sm text-muted-foreground text-center">
-                    Swipe left or right to navigate through projects
-                  </div>
-                </div>
-              </div>
+              <ProjectCarousel 
+                projects={dataProjects}
+                isAdmin={isAdmin}
+                onUpdate={handleProjectUpdate}
+              />
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {dataProjects.map((project, index) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    isAdmin={isAdmin}
-                    onUpdate={handleProjectUpdate}
-                    index={index}
-                  />
-                ))}
-              </div>
+              <ProjectGrid 
+                projects={dataProjects}
+                isAdmin={isAdmin}
+                onUpdate={handleProjectUpdate}
+              />
             )}
           </div>
         </section>
