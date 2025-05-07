@@ -355,13 +355,13 @@ export default function Data() {
             </div>
             
             {viewMode === 'carousel' ? (
-              <div className="px-4 md:px-12 max-w-4xl mx-auto">
+              <div className="px-4 md:px-12 max-w-5xl mx-auto">
                 <Carousel className="w-full">
-                  <CarouselContent>
+                  <CarouselContent className="-ml-2 md:-ml-4">
                     {dataProjects.map((project, index) => (
-                      <CarouselItem key={project.id}>
+                      <CarouselItem key={project.id} className="pl-2 md:pl-4 basis-full md:basis-9/10 lg:basis-4/5">
                         <div className="p-1">
-                          <Card className="border border-primary/10">
+                          <Card className="border-primary/10 shadow-lg">
                             <ProjectCard
                               project={project}
                               isAdmin={isAdmin}
@@ -373,14 +373,18 @@ export default function Data() {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <div className="relative h-0">
-                    <CarouselPrevious />
-                    <CarouselNext />
+                  <div className="hidden md:block relative h-0">
+                    <CarouselPrevious className="left-0 md:-left-12" />
+                    <CarouselNext className="right-0 md:-right-12" />
                   </div>
                 </Carousel>
-                <div className="flex items-center justify-center gap-2 mt-6">
-                  <div className="text-sm text-muted-foreground">
-                    Use the arrows to navigate through projects
+                <div className="mt-6 flex flex-col items-center justify-center md:hidden">
+                  <div className="flex gap-4 mb-4">
+                    <CarouselPrevious className="position-static transform-none h-10 w-10 rounded-full" />
+                    <CarouselNext className="position-static transform-none h-10 w-10 rounded-full" />
+                  </div>
+                  <div className="text-sm text-muted-foreground text-center">
+                    Swipe left or right to navigate through projects
                   </div>
                 </div>
               </div>
