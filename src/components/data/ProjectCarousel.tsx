@@ -29,16 +29,12 @@ export const ProjectCarousel = ({ projects, isAdmin, onUpdate }: ProjectCarousel
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="hidden md:block relative h-0">
+        <div className="relative h-0">
           <CarouselPrevious className="left-0 md:-left-12" />
           <CarouselNext className="right-0 md:-right-12" />
         </div>
       </Carousel>
       <div className="mt-6 flex flex-col items-center justify-center md:hidden">
-        <div className="flex gap-4 mb-4">
-          <CarouselPrevious className="position-static transform-none h-10 w-10 rounded-full" />
-          <CarouselNext className="position-static transform-none h-10 w-10 rounded-full" />
-        </div>
         <div className="text-sm text-muted-foreground text-center">
           Swipe left or right to navigate through projects
         </div>
