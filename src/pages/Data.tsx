@@ -260,7 +260,6 @@ export default function Data() {
           </div>
         </section>
 
-        {/* 3D Data Visualization Section */}
         <section className="section-padding">
           <div className="max-w-6xl mx-auto px-4">
             <motion.h2
