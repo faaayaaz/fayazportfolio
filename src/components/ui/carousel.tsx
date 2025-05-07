@@ -193,13 +193,10 @@ const CarouselItem = React.forwardRef<
 })
 CarouselItem.displayName = "CarouselItem"
 
-// Fixed: Wrapping the navigation buttons in their own components
-// that are meant to be used within the Carousel context
 const CarouselPrevious = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-  // The hook must be used within a component that's rendered inside a Carousel
   const { orientation, scrollPrev, canScrollPrev } = useCarousel()
 
   return (
@@ -229,7 +226,6 @@ const CarouselNext = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-  // The hook must be used within a component that's rendered inside a Carousel
   const { orientation, scrollNext, canScrollNext } = useCarousel()
 
   return (
