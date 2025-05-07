@@ -26,12 +26,13 @@ export const ProjectCard = ({ project, isAdmin, onUpdate, index }: ProjectCardPr
     >
       {project.image_url ? (
         <div className="relative w-full overflow-hidden rounded-t-xl">
-          <AspectRatio ratio={16 / 9} className="w-full mx-auto">
-            <div className="flex items-center justify-center w-full h-full bg-accent/10">
+          <AspectRatio ratio={16 / 9}>
+            <div className="w-full h-full bg-accent/5 flex items-center justify-center p-4">
               <img
                 src={project.image_url}
                 alt={project.title}
-                className="w-auto h-auto max-w-full max-h-full object-contain"
+                className="max-w-full max-h-full object-contain"
+                style={{ maxHeight: "180px" }}
               />
             </div>
           </AspectRatio>
